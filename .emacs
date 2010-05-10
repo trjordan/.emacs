@@ -27,6 +27,7 @@
 (setq c-basic-offset 4)
 
 ;; Load in any other modes I use frequently
+(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (load "dired-x")
 (require 'php-mode)
 (require 'ibuffer-git)
@@ -34,7 +35,10 @@
 (require 'flymake-jslint)
 (add-hook 'js-mode-hook
           (lambda () (flymake-mode nil)))
-;(load "flymake-cust.el")
+
+(add-hook 'js-mode-hook 'js-custom-setup)
+(defun js-custom-setup ()
+  (moz-minor-mode 1))
 (load "flymake-cursor.el")
 
 ;; Change some file associations
@@ -76,6 +80,7 @@
  '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ibuffer-git-column-length 8)
  '(indent-tabs-mode nil)
+ '(js-expr-indent-offset 4)
  '(matlab-indent-level 4)
  '(matlab-keyword-list (quote ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
  '(matlab-mode-install-path (quote ("/usr/matlab/bin/toolbox/")))
