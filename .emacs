@@ -11,6 +11,9 @@
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
 
+;; Set up my path
+(setq load-path (append (list "~/.emacs.d") load-path))
+
 ;; Turn of the menu bars
 (menu-bar-mode nil)
 (tool-bar-mode nil)
@@ -23,20 +26,21 @@
 ;; Spaces, not tabs!
 (setq c-basic-offset 4)
 
+;; Load in any other modes I use frequently
+(load "dired-x")
+(require 'php-mode)
+(require 'ibuffer-git)
+(autoload 'javascript-mode "javascript" nil t)
+(require 'flymake-jslint)
+(add-hook 'js-mode-hook
+          (lambda () (flymake-mode nil)))
+;(load "flymake-cust.el")
+(load "flymake-cursor.el")
+
 ;; Change some file associations
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-
-;; Load in any other modes I use frequently
-(load "dired-x")
-(require 'php-mode)
-(setq load-path (append (list "~/.emacs.d") load-path))
-(autoload 'javascript-mode "javascript" nil t)
-(require 'flymake-jslint)
-(add-hook 'javascript-mode-hook
-          (lambda () (flymake-mode nil)))
-(require 'ibuffer-git)
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
