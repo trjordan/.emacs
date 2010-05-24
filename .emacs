@@ -34,7 +34,8 @@
 (autoload 'javascript-mode "javascript" nil t)
 (require 'flymake-jslint)
 (add-hook 'js-mode-hook
-          (lambda () (flymake-mode nil)))
+          (lambda () (if (< (buffer-size) (* 250 1024))
+                         (flymake-mode nil))))
 
 (add-hook 'js-mode-hook 'js-custom-setup)
 (defun js-custom-setup ()
