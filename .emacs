@@ -2,9 +2,6 @@
 ;;; TR's .emacs file
 ;;;
 
-;; Start the server so we can use emacsclient to load files into the existing emacs
-(server-start)
-
 ;; Bind some keys for me
 (global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-cs" 'shell)
@@ -109,3 +106,4 @@
 (put 'scroll-left 'disabled nil)
 
 (put 'downcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
