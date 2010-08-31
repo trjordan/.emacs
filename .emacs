@@ -7,6 +7,7 @@
 (global-set-key "\C-cs" 'shell)
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
+(global-set-key "\C-c\C-r" (lambda () (interactive) (revert-buffer t t)))
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
@@ -24,7 +25,6 @@
 (setq c-basic-offset 4)
 
 ;; Load in any other modes I use frequently
-(autoload 'moz-minor-mode "moz" "Mozilla Minor and Inferior Mozilla Modes" t)
 (load "dired-x")
 (require 'php-mode)
 (require 'ibuffer-git)
@@ -34,9 +34,6 @@
           (lambda () (if (< (buffer-size) (* 250 1024))
                          (flymake-mode nil))))
 
-(add-hook 'js-mode-hook 'js-custom-setup)
-(defun js-custom-setup ()
-  (moz-minor-mode 1))
 (load "flymake-cursor.el")
 
 ;; Change some file associations
