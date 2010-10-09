@@ -28,7 +28,6 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 (require 'ibuffer-git)
-(autoload 'javascript-mode "javascript" nil t)
 (require 'flymake-jslint)
 (add-hook 'js-mode-hook
           (lambda () (if (< (buffer-size) (* 250 1024))
@@ -40,7 +39,6 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions

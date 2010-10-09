@@ -21,7 +21,7 @@ message in the minibuffer"
 (defun fly-determine-message (err)
   "pyflake is flakey if it has compile problems, this adjusts the
 message to display, so there is one ;)"
-  (cond ((not (eq major-mode 'javascript-mode)))
+  (cond ((not (eq major-mode 'js-mode)))
         ((null (flymake-ler-file err))
          ;; normal message do your thing
          (flymake-ler-text err))
