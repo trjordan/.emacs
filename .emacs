@@ -10,6 +10,8 @@
 (global-set-key "\C-cf" 'find-grep)
 (global-set-key "\C-cq" 'query-replace-regexp)
 (global-set-key "\C-ci" 'indent-region)
+(global-set-key "\C-cn" 'flymake-goto-next-error)
+(global-set-key "\C-cp" 'flymake-goto-prev-error)
 (global-set-key "\C-c\C-r" (lambda () (interactive) (revert-buffer t t)))
 
 ;; Set up my path
