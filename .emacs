@@ -80,6 +80,7 @@
  '(ibuffer-git-column-length 8)
  '(indent-tabs-mode nil)
  '(js-expr-indent-offset 4)
+ '(kill-whole-line t)
  '(matlab-indent-level 4)
  '(matlab-keyword-list (quote ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
  '(matlab-mode-install-path (quote ("/usr/matlab/bin/toolbox/")))
