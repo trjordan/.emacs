@@ -12,14 +12,17 @@
 (global-set-key "\C-ci" 'indent-region)
 (global-set-key "\C-cn" 'flymake-goto-next-error)
 (global-set-key "\C-cp" 'flymake-goto-prev-error)
-(global-set-key "\C-c\C-r" (lambda () (interactive) (revert-buffer t t)))
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-c\C-o" 'c-set-offset)
+(global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
 
 ;; Turn of the menu bars
 (menu-bar-mode nil)
-(tool-bar-mode nil)
+;(tool-bar-mode nil)
 
 (set-face-attribute 'default nil :height 90)
 
@@ -34,16 +37,19 @@
 (load "dired-x")
 (require 'ibuffer-git)
 (require 'flymake-jslint)
-(add-hook 'js-mode-hook
-          (lambda () (if (< (buffer-size) (* 250 1024))
-                         (flymake-mode nil))))
+;(remove-hook 'js-mode-hook
+;          (lambda () (if (< (buffer-size) (* 250 1024))
+;                         (flymake-mode nil))))
 
 (load "flymake-cursor.el")
+(load "~/.emacs.d/nxhtml/autostart.el")
+(require 'ourcomments-widgets)
 
 ;; Change some file associations
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
@@ -52,6 +58,7 @@
 ;(setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
 ; Set my indentation rules
+
 (defun my-offsets ()
   (c-set-offset 'arglist-intro '+)
   (c-set-offset 'arglist-close 0)
@@ -90,9 +97,14 @@
  '(matlab-shell-input-ring-size 128)
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
+ '(mumamo-major-modes (quote ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode) (asp-vb-mode visual-basic-mode) (javascript-mode js-mode javascript-mode espresso-mode ecmascript-mode) (java-mode jde-mode java-mode) (groovy-mode groovy-mode) (nxhtml-mode nxhtml-mode html-mode))))
+ '(org-level-color-stars-only t)
+ '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
+ '(python-python-command "python")
  '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
+ '(sort-fold-case t t)
  '(transient-mark-mode t)
  '(x-select-enable-clipboard t))
 (custom-set-faces
@@ -100,7 +112,8 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- )
+ '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
+ '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
  
 
 (put 'upcase-region 'disabled nil)
