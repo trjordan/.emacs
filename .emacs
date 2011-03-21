@@ -16,6 +16,7 @@
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+(global-set-key "\C-xvf" 'vc-git-grep)
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
@@ -40,6 +41,8 @@
 ;(remove-hook 'js-mode-hook
 ;          (lambda () (if (< (buffer-size) (* 250 1024))
 ;                         (flymake-mode nil))))
+
+
 
 (load "flymake-cursor.el")
 (load "~/.emacs.d/nxhtml/autostart.el")
@@ -80,7 +83,7 @@
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
- '(grep-find-command "find . -wholename '*ext-js*' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
+ '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
