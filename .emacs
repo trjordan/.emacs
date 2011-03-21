@@ -7,7 +7,7 @@
 (global-set-key "\C-cs" 'shell)
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
-(global-set-key "\C-cf" 'find-grep)
+(global-set-key "\C-cf" 'vc-git-grep)
 (global-set-key "\C-cq" 'query-replace-regexp)
 (global-set-key "\C-ci" 'indent-region)
 (global-set-key "\C-cn" 'flymake-goto-next-error)
@@ -16,7 +16,6 @@
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
-(global-set-key "\C-xvf" 'vc-git-grep)
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
