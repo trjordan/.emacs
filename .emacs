@@ -41,7 +41,8 @@
 ;          (lambda () (if (< (buffer-size) (* 250 1024))
 ;                         (flymake-mode nil))))
 
-
+;; Add some places to the path
+(add-to-list 'load-path "~/.emacs.d/nxml/")
 
 (load "flymake-cursor.el")
 (load "~/.emacs.d/nxhtml/autostart.el")
