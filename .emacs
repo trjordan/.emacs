@@ -59,7 +59,8 @@
 ;(setq version-control t)
 ;(setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
-; Set my indentation rules
+; Load my keyboard macros
+(load "kbd-macros.el")
 
 (defun my-offsets ()
   (c-set-offset 'arglist-intro '+)
@@ -82,11 +83,13 @@
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
+ '(global-auto-revert-mode t)
  '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ibuffer-git-column-length 8)
+ '(ido-mode (quote file) nil (ido))
  '(indent-tabs-mode nil)
  '(js-expr-indent-offset 4)
  '(kill-whole-line t)
@@ -104,6 +107,7 @@
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-python-command "python")
+ '(revert-without-query (quote (".*")))
  '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
