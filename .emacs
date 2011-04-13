@@ -2,21 +2,6 @@
 ;;; TR's .emacs file
 ;;;
 
-;; Bind some keys for me
-(global-set-key "\C-x\C-b" 'ibuffer)
-(global-set-key "\C-cs" 'shell)
-(global-set-key "\C-cg" 'goto-line)
-(global-set-key "\C-ca" 'align-regexp)
-(global-set-key "\C-cf" 'vc-git-grep)
-(global-set-key "\C-cq" 'query-replace-regexp)
-(global-set-key "\C-ci" 'indent-region)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
-(global-set-key "\C-cp" 'flymake-goto-prev-error)
-(global-set-key "\C-cc" 'comment-region)
-(global-set-key "\C-cu" 'uncomment-region)
-(global-set-key "\C-c\C-o" 'c-set-offset)
-(global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
-
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
 
@@ -42,7 +27,8 @@
 ;                         (flymake-mode nil))))
 
 ;; Add some places to the path
-(add-to-list 'load-path "~/.emacs.d/nxml/")
+(if (< emacs-major-version 23)
+    (add-to-list 'load-path "~/.emacs.d/nxml/"))
 
 (load "flymake-cursor.el")
 (load "~/.emacs.d/nxhtml/autostart.el")
@@ -70,6 +56,22 @@
 (add-hook 'java-mode-hook 'my-offsets)
 (add-hook 'php-mode-hook 'my-offsets)
 
+;; Bind some keys for me
+(global-set-key "\C-x\C-b" 'ibuffer)
+(global-set-key "\C-cs" 'shell)
+(global-set-key "\C-cg" 'goto-line)
+(global-set-key "\C-ca" 'align-regexp)
+(global-set-key "\C-cf" 'vc-git-grep)
+(global-set-key "\C-cq" 'query-replace-regexp)
+(global-set-key "\C-ci" 'indent-region)
+(global-set-key "\C-cn" 'flymake-goto-next-error)
+(global-set-key "\C-cp" 'flymake-goto-prev-error)
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-cm" 'make-pprint-from-print)
+(global-set-key "\C-c\C-o" 'c-set-offset)
+(global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+
 ;; End of file.
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -90,7 +92,7 @@
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
  '(ibuffer-git-column-length 8)
- '(ido-mode (quote file) nil (ido))
+ '(ido-mode (quote both) nil (ido))
  '(indent-tabs-mode nil)
  '(js-expr-indent-offset 4)
  '(kill-whole-line t)
