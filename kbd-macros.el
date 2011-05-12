@@ -10,3 +10,19 @@
    "\C-xbdevelopment.ini\C-m\C-[<\C-slogger_sqlalchemy\C-n\C-e\C-[\C-?INFO\C-x\C-s\C-xb\C-m")
 (fset 'pylons-set-sqlalchemy-warn
    "\C-xbdevelopment.ini\C-m\C-[<\C-slogger_sqlalchemy\C-n\C-e\C-[\C-?WARN\C-x\C-s\C-xb\C-m")
+
+(fset 'query-sub-date
+   "\C-[>\C-a\C-[z]\C-[z]\C-d\C-sdatetime\C-[b\C-[z)\C-[z)\C-d\C-d\C-rfirst\C-r\C-[f\C-[f\C-[f\C-?\C-?subdate(now(), interval 1 day)\C-[d\C-[d\C-[d\C-[d\C-d\C-d\C-d\C-d\C-d\C-[>")
+(fset 'query-sub-last-arg
+   "\C-b\C-@\C-r,\C-m\C-f\C-w\C-?\C-r%s\C-m\C-d\C-d\C-y\C-u\C-@\C-u\C-@\C-e")
+
+(defun query-sub-all () 
+  (interactive)
+  (query-sub-date)
+  (save-excursion
+    (goto-char 0)
+    (let ((count (count-matches "%s")))
+      (while (> count 0)
+        (query-sub-last-arg)
+        (setq count (- count 1))))))
+
