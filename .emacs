@@ -72,6 +72,14 @@
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
 
+(load "sql-transform.el")
+(add-hook 'sql-mode-hook
+	  (function (lambda ()
+		      (local-set-key "\M-q" 'sql-to-select))))
+
+;; Don't be intelligent about how to split the window
+(setq split-height-threshold nil)
+
 ;; End of file.
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -79,6 +87,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
+ '(case-fold-search t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -115,6 +124,7 @@
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
  '(transient-mark-mode t)
+ '(user-mail-address "terral.jordan@gmail.com")
  '(x-select-enable-clipboard t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
