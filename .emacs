@@ -7,9 +7,9 @@
 
 ;; Turn of the menu bars
 (menu-bar-mode nil)
-;(tool-bar-mode nil)
+(tool-bar-mode nil)
 
-(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'default nil :height 75)
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -56,9 +56,45 @@
 (add-hook 'java-mode-hook 'my-offsets)
 (add-hook 'php-mode-hook 'my-offsets)
 
+;; Set up starting terms with programs in them
+(defun djcb-term-start-or-switch (prg &optional use-existing name cmd)
+  "* run program PRG in a terminal buffer. If USE-EXISTING is non-nil "
+  " and PRG is already running, switch to that buffer instead of starting"
+  " a new instance."
+  (interactive)
+  (let ((bufname (if name (concat "*" name "*") (concat "*" prg "*"))))
+    (when (not (and use-existing
+                 (let ((buf (get-buffer bufname)))
+                   (and buf (buffer-name (switch-to-buffer bufname))))))
+      (ansi-term prg (or name prg))
+      (if cmd (process-send-string bufname (concat cmd "\n"))))))
+
+(defmacro djcb-program-shortcut (key &optional fullname cmd)
+  "* macro to create a key binding KEY to start some terminal program PRG; 
+    if USE-EXISTING is true, try to switch to an existing buffer"
+  `(global-set-key ,key 
+     '(lambda()
+        (interactive)
+        (djcb-term-start-or-switch "bash" t ,fullname ,cmd))))
+
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "tl")
+(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
+(djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
+(djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql tracelytics_mysql2test")
+(djcb-program-shortcut (kbd "<S-f5>") "cassandra" "cassandra-cli --host 127.0.0.1" )
+(djcb-program-shortcut (kbd "<S-f6>") "tf" "cd ~/repos/tracelons/transformer/etl && runtf")
+(djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
+(djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
+(djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
+
+;; Fix the color in terminals
+(setq term-default-bg-color nil)
+(setq term-default-fg-color "#FFFFFF")
+(load "colortheme.el")
+(color-theme-tr)
+
 ;; Bind some keys for me
 (global-set-key "\C-x\C-b" 'ibuffer)
-(global-set-key "\C-cs" 'shell)
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
 (global-set-key "\C-cf" 'vc-git-grep)
