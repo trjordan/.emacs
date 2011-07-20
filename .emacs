@@ -7,7 +7,7 @@
 
 ;; Turn of the menu bars
 (menu-bar-mode nil)
-(tool-bar-mode nil)
+(if (boundp 'tool-bar-mode) (tool-bar-mode nil))
 
 (set-face-attribute 'default nil :height 75)
 
@@ -91,7 +91,7 @@
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
 (load "colortheme.el")
-(color-theme-tr)
+(if (boundp 'color-theme-install) (color-theme-tr))
 
 ;; Bind some keys for me
 (global-set-key "\C-x\C-b" 'ibuffer)
