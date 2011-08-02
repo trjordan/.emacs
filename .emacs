@@ -77,6 +77,13 @@
         (interactive)
         (djcb-term-start-or-switch "bash" t ,fullname ,cmd))))
 
+;; http://emacs-journey.blogspot.com/2011/02/proper-ansi-term-yankpaste.html
+(defun my-term-paste (&optional string)
+  (interactive)
+  (process-send-string
+   (get-buffer-process (current-buffer))
+   (if string string (current-kill 0))))
+
 (djcb-program-shortcut (kbd "<S-f8>") "shell" "tl")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
@@ -86,6 +93,7 @@
 (djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
+(global-set-key "\C-cy" 'my-term-paste)
 
 ;; Fix the color in terminals
 (setq term-default-bg-color nil)
@@ -94,7 +102,6 @@
 (color-theme-tr)
 
 ;; Bind some keys for me
-(global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
 (global-set-key "\C-cf" 'vc-git-grep)
@@ -107,6 +114,11 @@
 (global-set-key "\C-cm" 'make-pprint-from-print)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+
+;; God these defaults are annoying
+(global-unset-key "\C-x\C-b")
+(global-unset-key "\C-x\C-n")
+(delete-selection-mode 1)
 
 (load "sql-transform.el")
 (add-hook 'sql-mode-hook
