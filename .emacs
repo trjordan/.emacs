@@ -128,6 +128,21 @@
 ;; Don't be intelligent about how to split the window
 (setq split-height-threshold nil)
 
+;; Set me up a python IDE!
+;;
+;; Installations require the following:
+;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
+;; pymacs: apt-get install pymacs
+;; ropemode: pip install ropemode
+;; rope: apt-get install rope
+(require 'auto-complete)
+(global-auto-complete-mode nil)
+(define-key ac-complete-mode-map "\C-n" 'ac-next)
+(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+
 ;; End of file.
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -166,7 +181,7 @@
  '(org-level-color-stars-only t)
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
- '(python-python-command "python")
+ '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
  '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
