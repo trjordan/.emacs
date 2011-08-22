@@ -79,6 +79,13 @@
         (interactive)
         (djcb-term-start-or-switch "bash" t ,fullname ,cmd))))
 
+;; http://emacs-journey.blogspot.com/2011/02/proper-ansi-term-yankpaste.html
+(defun my-term-paste (&optional string)
+  (interactive)
+  (process-send-string
+   (get-buffer-process (current-buffer))
+   (if string string (current-kill 0))))
+
 (djcb-program-shortcut (kbd "<S-f8>") "shell" "tl")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
@@ -88,6 +95,7 @@
 (djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
+(global-set-key "\C-cy" 'my-term-paste)
 
 ;; Fix the color in terminals
 (setq term-default-bg-color nil)
@@ -96,7 +104,6 @@
 (if (boundp 'color-theme-install) (color-theme-tr))
 
 ;; Bind some keys for me
-(global-set-key "\C-x\C-b" 'ibuffer)
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
 (global-set-key "\C-cf" 'vc-git-grep)
@@ -114,6 +121,12 @@
 
 (load "sql-transform.el") 
 
+;; God these defaults are annoying
+(global-unset-key "\C-x\C-b")
+(global-unset-key "\C-x\C-n")
+(delete-selection-mode 1)
+
+(load "sql-transform.el")
 (add-hook 'sql-mode-hook
 	  (function (lambda ()
 		      (local-set-key "\M-q" 'sql-to-select))))
@@ -123,6 +136,25 @@
 
 ;; Allow for root editing on remote machines
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+
+;; Set me up a python IDE!
+;;
+;; Installations require the following:
+;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
+;; pymacs: apt-get install pymacs (OS X: clone from repo, sudo make install)
+;; ropemode: pip install ropemode 
+;; rope: apt-get install rope (OS X: clone bitbucket repo, python setup.py install)
+;; ropemacs: ??? (OS X: clone bitbucket repo, python setup.py install)
+;;
+;; It appears that all python packages have to be installed system-wide, because
+;; I haven't figured out a way to make Pymacs see virtualenvs yet.
+(require 'auto-complete)
+(global-auto-complete-mode nil)
+(define-key ac-complete-mode-map "\C-n" 'ac-next)
+(define-key ac-complete-mode-map "\C-p" 'ac-previous)
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
 
 ;; End of file.
 (custom-set-variables
@@ -175,7 +207,7 @@
  '(py-python-command "~/venv/bin/pythonload")
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
- '(python-python-command "~/venv/bin/ipython")
+ '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
  '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
