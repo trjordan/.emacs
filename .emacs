@@ -126,10 +126,6 @@
 ;; pymacs: apt-get install pymacs
 ;; ropemode: pip install ropemode
 ;; rope: apt-get install rope
-(require 'auto-complete)
-(global-auto-complete-mode nil)
-(define-key ac-complete-mode-map "\C-n" 'ac-next)
-(define-key ac-complete-mode-map "\C-p" 'ac-previous)
 (defun load-ropemacs ()
   "Load pymacs and ropemacs"
   (interactive)
