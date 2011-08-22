@@ -101,25 +101,6 @@
 (load "colortheme.el")
 (if (boundp 'color-theme-install) (color-theme-tr))
 
-;; Bind some keys for me
-(global-set-key "\C-cg" 'goto-line)
-(global-set-key "\C-ca" 'align-regexp)
-(global-set-key "\C-cf" 'vc-git-grep)
-(global-set-key "\C-cq" 'query-replace-regexp)
-(global-set-key "\C-ci" 'indent-region)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
-(global-set-key "\C-cp" 'flymake-goto-prev-error)
-(global-set-key "\C-cc" 'comment-region)
-(global-set-key "\C-cu" 'uncomment-region)
-(global-set-key "\C-cm" 'make-pprint-from-print)
-(global-set-key "\C-c\C-o" 'c-set-offset)
-(global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
-
-;; God these defaults are annoying
-(global-unset-key "\C-x\C-b")
-(global-unset-key "\C-x\C-n")
-(delete-selection-mode 1)
-
 (load "sql-transform.el")
 (add-hook 'sql-mode-hook
 	  (function (lambda ()
@@ -139,9 +120,34 @@
 (global-auto-complete-mode nil)
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
+(defun load-ropemacs ()
+  "Load pymacs and ropemacs"
+  (interactive)
+  (require 'pymacs)
+  (pymacs-load "ropemacs" "rope-")
+  ;; Automatically save project python buffers before refactorings
+  (setq ropemacs-confirm-saving 'nil))
+(global-set-key "\C-xpl" 'load-ropemacs)
+
+;; Bind some keys for me
+(global-set-key "\C-cg" 'goto-line)
+(global-set-key "\C-ca" 'align-regexp)
+(global-set-key "\C-cf" 'vc-git-grep)
+(global-set-key "\C-cq" 'query-replace-regexp)
+(global-set-key "\C-ci" 'indent-region)
+(global-set-key "\C-cn" 'flymake-goto-next-error)
+(global-set-key "\C-cp" 'flymake-goto-prev-error)
+(global-set-key "\C-cc" 'comment-region)
+(global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-ct" 'global-auto-complete-mode)
+(global-set-key "\C-cm" 'make-pprint-from-print)
+(global-set-key "\C-c\C-o" 'c-set-offset)
+(global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+
+;; God these defaults are annoying
+(global-unset-key "\C-x\C-b")
+(global-unset-key "\C-x\C-n")
+(delete-selection-mode 1)
 
 ;; End of file.
 (custom-set-variables
@@ -183,11 +189,13 @@
  '(python-guess-indent t)
  '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
+ '(ropemacs-enable-autoimport nil)
  '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
  '(transient-mark-mode t)
  '(user-mail-address "terral.jordan@gmail.com")
+ '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
