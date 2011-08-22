@@ -2,7 +2,15 @@
 ;;; TR's .emacs file
 ;;;
 
-(setq custom-file "~/.emacs")
+(require 'desktop)
+(desktop-save-mode 1)
+(setq desktop-dirname "~/.emacs.d/")
+(defun my-desktop-save ()
+  (interactive)
+  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+(add-hook 'auto-save-hook 'my-desktop-save)
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
@@ -103,6 +111,38 @@
 (load "colortheme.el")
 (if (boundp 'color-theme-install) (color-theme-tr))
 
+;; Set me up a python IDE!
+;;
+;; Installations require the following:
+;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
+;; pymacs: apt-get install pymacs (OS X: clone from repo, sudo make install)
+;; ropemode: pip install ropemode 
+;; rope: apt-get install rope (OS X: clone bitbucket repo, python setup.py install)
+;; ropemacs: ??? (OS X: clone bitbucket repo, python setup.py install)
+;;
+;; Everything really works best if you just clone the repos and install from
+;; there. Probably best to use the right emacs tag of pymacs, though (23 is
+;; included in the repo).
+;;
+;; It appears that all python packages have to be installed system-wide, because
+;; I haven't figured out a way to make Pymacs see virtualenvs yet.
+(defun load-ropemacs ()
+  "Load pymacs and ropemacs"
+  (interactive)
+  (require 'pymacs)
+  (pymacs-load "ropemacs" "rope-")
+  ;; Automatically save project python buffers before refactorings
+  (setq ropemacs-confirm-saving 'nil)
+
+  (define-key ropemacs-local-keymap "\M-/" 'rope-code-assist)
+  (define-key ropemacs-local-keymap "\C-co" 'rope-goto-definition)
+  (define-key ropemacs-local-keymap "\C-cu" 'rope-pop-mark)
+  (define-key ropemacs-local-keymap "\C-cd" 'rope-show-doc)
+  (define-key ropemacs-local-keymap "\C-cF" 'rope-find-occurrences)
+  (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
+
+(global-set-key "\C-xpl" 'load-ropemacs)
+
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
@@ -113,13 +153,12 @@
 (global-set-key "\C-cp" 'flymake-goto-prev-error)
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
+(global-set-key "\C-ct" 'global-auto-complete-mode)
 (global-set-key "\C-cm" 'make-pprint-from-print)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
-
-(load "sql-transform.el") 
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
@@ -137,24 +176,32 @@
 ;; Allow for root editing on remote machines
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 
-;; Set me up a python IDE!
-;;
-;; Installations require the following:
-;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
-;; pymacs: apt-get install pymacs (OS X: clone from repo, sudo make install)
-;; ropemode: pip install ropemode 
-;; rope: apt-get install rope (OS X: clone bitbucket repo, python setup.py install)
-;; ropemacs: ??? (OS X: clone bitbucket repo, python setup.py install)
-;;
-;; It appears that all python packages have to be installed system-wide, because
-;; I haven't figured out a way to make Pymacs see virtualenvs yet.
-(require 'auto-complete)
-(global-auto-complete-mode nil)
-(define-key ac-complete-mode-map "\C-n" 'ac-next)
-(define-key ac-complete-mode-map "\C-p" 'ac-previous)
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
+;; Let me define and bind keyboard macros on the fly easily
+;; These should be a defmacro + one-liners. Oh well. 
+(defun setf5 ()
+  (interactive)
+  (name-last-kbd-macro 'f5)
+  (global-set-key (kbd "<f5>") 'f5)
+  (message "F5 set to last macro."))
+(defun setf6 ()
+  (interactive)
+  (name-last-kbd-macro 'f6)
+  (global-set-key (kbd "<f6>") 'f6)
+  (message "F6 set to last macro."))
+(defun setf7 ()
+  (interactive)
+  (name-last-kbd-macro 'f7)
+  (global-set-key (kbd "<f7>") 'f7)
+  (message "F7 set to last macro."))
+(defun setf8 ()
+  (interactive)
+  (name-last-kbd-macro 'f8)
+  (global-set-key (kbd "<f8>") 'f8)
+  (message "F8 set to last macro."))
+(global-set-key (kbd "<C-f5>") 'setf5)
+(global-set-key (kbd "<C-f6>") 'setf6)
+(global-set-key (kbd "<C-f7>") 'setf7)
+(global-set-key (kbd "<C-f8>") 'setf8)
 
 ;; End of file.
 (custom-set-variables
@@ -209,11 +256,14 @@
  '(python-guess-indent t)
  '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
- '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
+ '(ropemacs-enable-autoimport nil)
+ '(ropemacs-enable-shortcuts nil)
+ '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
  '(user-mail-address "terral.jordan@gmail.com")
  '(visual-line-mode nil t)
+ '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
