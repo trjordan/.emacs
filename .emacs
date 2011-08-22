@@ -136,7 +136,15 @@
   (require 'pymacs)
   (pymacs-load "ropemacs" "rope-")
   ;; Automatically save project python buffers before refactorings
-  (setq ropemacs-confirm-saving 'nil))
+  (setq ropemacs-confirm-saving 'nil)
+
+  (define-key ropemacs-local-keymap "\M-/" 'rope-code-assist)
+  (define-key ropemacs-local-keymap "\C-co" 'rope-goto-definition)
+  (define-key ropemacs-local-keymap "\C-cu" 'rope-pop-mark)
+  (define-key ropemacs-local-keymap "\C-cd" 'rope-show-doc)
+  (define-key ropemacs-local-keymap "\C-cF" 'rope-find-occurrences)
+  (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
+
 (global-set-key "\C-xpl" 'load-ropemacs)
 
 ;; Bind some keys for me
@@ -158,6 +166,33 @@
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-n")
 (delete-selection-mode 1)
+
+;; Let me define and bind keyboard macros on the fly easily
+;; These should be a defmacro + one-liners. Oh well. 
+(defun setf5 ()
+  (interactive)
+  (name-last-kbd-macro 'f5)
+  (global-set-key (kbd "<f5>") 'f5)
+  (message "F5 set to last macro."))
+(defun setf6 ()
+  (interactive)
+  (name-last-kbd-macro 'f6)
+  (global-set-key (kbd "<f6>") 'f6)
+  (message "F6 set to last macro."))
+(defun setf7 ()
+  (interactive)
+  (name-last-kbd-macro 'f7)
+  (global-set-key (kbd "<f7>") 'f7)
+  (message "F7 set to last macro."))
+(defun setf8 ()
+  (interactive)
+  (name-last-kbd-macro 'f8)
+  (global-set-key (kbd "<f8>") 'f8)
+  (message "F8 set to last macro."))
+(global-set-key (kbd "<C-f5>") 'setf5)
+(global-set-key (kbd "<C-f6>") 'setf6)
+(global-set-key (kbd "<C-f7>") 'setf7)
+(global-set-key (kbd "<C-f8>") 'setf8)
 
 ;; End of file.
 (custom-set-variables
@@ -200,6 +235,7 @@
  '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
+ '(ropemacs-enable-shortcuts nil)
  '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
