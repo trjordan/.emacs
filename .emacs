@@ -2,6 +2,16 @@
 ;;; TR's .emacs file
 ;;;
 
+(require 'desktop)
+(desktop-save-mode 1)
+(setq desktop-dirname "~/.emacs.d/")
+(defun my-desktop-save ()
+  (interactive)
+  ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+  (if (eq (desktop-owner) (emacs-pid))
+      (desktop-save desktop-dirname)))
+(add-hook 'auto-save-hook 'my-desktop-save)
+
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
 
@@ -190,7 +200,7 @@
  '(python-python-command "ipython")
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
- '(safe-local-variable-values (quote ((c-hanging-comment-ender-p))))
+ '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
  '(transient-mark-mode t)
