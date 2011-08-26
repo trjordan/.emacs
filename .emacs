@@ -19,7 +19,7 @@
 (menu-bar-mode nil)
 (if (boundp 'tool-bar-mode) (tool-bar-mode nil))
 
-(set-face-attribute 'default nil :height 75)
+(set-face-attribute 'default nil :height 75)so
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -136,12 +136,36 @@
 
   (define-key ropemacs-local-keymap "\M-/" 'rope-code-assist)
   (define-key ropemacs-local-keymap "\C-co" 'rope-goto-definition)
-  (define-key ropemacs-local-keymap "\C-cu" 'rope-pop-mark)
+  (define-key ropemacs-local-keymap "\C-cb" 'rope-pop-mark)
   (define-key ropemacs-local-keymap "\C-cd" 'rope-show-doc)
   (define-key ropemacs-local-keymap "\C-cF" 'rope-find-occurrences)
   (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
 
 (global-set-key "\C-xpl" 'load-ropemacs)
+
+(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
+  "Kill up to the ARG'th occurence of CHAR, and leave CHAR. If
+  you are deleting forward, the CHAR is replaced and the point is
+  put before CHAR"
+  (insert char)
+  (if (< 0 arg) (forward-char -1)))
+
+(defun clean-copy () 
+  "Removes the first newline in a buffer."
+  (interactive)
+  (move-end-of-line 1)
+  (kill-line))
+
+(defun up-one-newline () 
+  "Removes the newline and all whitespace before the current point."
+  (interactive)
+  (save-excursion
+    (move-beginning-of-line nil)
+    (just-one-space 0)
+    (set-mark-command nil)
+    (previous-line)
+    (move-end-of-line 1)
+    (kill-region (point) (mark))))
 
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
@@ -157,11 +181,16 @@
 (global-set-key "\C-cm" 'make-pprint-from-print)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-T" 'transpose-paragraphs)
+(global-set-key (kbd "<f9>") 'clean-copy)
+(global-set-key "\C-x\C-p" 'up-one-newline)
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-n")
-(delete-selection-mode 1)
 
 ;; Let me define and bind keyboard macros on the fly easily
 ;; These should be a defmacro + one-liners. Oh well. 
@@ -185,10 +214,34 @@
   (name-last-kbd-macro 'f8)
   (global-set-key (kbd "<f8>") 'f8)
   (message "F8 set to last macro."))
+(defun setf9 ()
+  (interactive)
+  (name-last-kbd-macro 'f9)
+  (global-set-key (kbd "<f9>") 'f9)
+  (message "F9 set to last macro."))
+(defun setf10 ()
+  (interactive)
+  (name-last-kbd-macro 'f10)
+  (global-set-key (kbd "<f10>") 'f10)
+  (message "F10 set to last macro."))
+(defun setf11 ()
+  (interactive)
+  (name-last-kbd-macro 'f11)
+  (global-set-key (kbd "<f11>") 'f11)
+  (message "F11 set to last macro."))
+(defun setf12 ()
+  (interactive)
+  (name-last-kbd-macro 'f12)
+  (global-set-key (kbd "<f12>") 'f12)
+  (message "F12 set to last macro."))
 (global-set-key (kbd "<C-f5>") 'setf5)
 (global-set-key (kbd "<C-f6>") 'setf6)
 (global-set-key (kbd "<C-f7>") 'setf7)
 (global-set-key (kbd "<C-f8>") 'setf8)
+(global-set-key (kbd "<C-f9>") 'setf9)
+(global-set-key (kbd "<C-f10>") 'setf10)
+(global-set-key (kbd "<C-f11>") 'setf11)
+(global-set-key (kbd "<C-f12>") 'setf12)
 
 ;; End of file.
 (custom-set-variables
