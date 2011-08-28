@@ -19,7 +19,9 @@
 (menu-bar-mode 0)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
-(set-face-attribute 'default nil :height 100)
+;; The good reference on specifying fonts:
+;; http://www.gnu.org/software/libtool/manual/emacs/Fonts.html
+(set-default-font "Menlo-12:weight=demibold")
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -105,9 +107,11 @@
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
 (global-set-key "\C-cy" 'my-term-paste)
 
-;; Fix the color in terminals
+;; Fix the color in terminals, and load my color theme
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
+(require 'color-theme)
+(color-theme-initialize)
 (load "colortheme.el")
 (if (boundp 'color-theme-install) (color-theme-tr))
 
