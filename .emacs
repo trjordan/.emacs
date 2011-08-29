@@ -16,10 +16,10 @@
 (setq load-path (append (list "~/.emacs.d") load-path))
 
 ;; Turn of the menu bars
-(menu-bar-mode nil)
-(if (boundp 'tool-bar-mode) (tool-bar-mode nil))
+(menu-bar-mode 0)
+(if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
-(set-face-attribute 'default nil :height 75)so
+(set-face-attribute 'default nil :height 75)
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -111,21 +111,21 @@
 (load "colortheme.el")
 (if (boundp 'color-theme-install) (color-theme-tr))
 
-(load "sql-transform.el")
-(add-hook 'sql-mode-hook
-	  (function (lambda ()
-		      (local-set-key "\M-q" 'sql-to-select))))
-
-;; Don't be intelligent about how to split the window
-(setq split-height-threshold nil)
-
 ;; Set me up a python IDE!
 ;;
 ;; Installations require the following:
 ;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
-;; pymacs: apt-get install pymacs
-;; ropemode: pip install ropemode
-;; rope: apt-get install rope
+;; pymacs: apt-get install pymacs (OS X: clone from repo, sudo make install)
+;; ropemode: pip install ropemode 
+;; rope: apt-get install rope (OS X: clone bitbucket repo, python setup.py install)
+;; ropemacs: ??? (OS X: clone bitbucket repo, python setup.py install)
+;;
+;; Everything really works best if you just clone the repos and install from
+;; there. Probably best to use the right emacs tag of pymacs, though (23 is
+;; included in the repo).
+;;
+;; It appears that all python packages have to be installed system-wide, because
+;; I haven't figured out a way to make Pymacs see virtualenvs yet.
 (defun load-ropemacs ()
   "Load pymacs and ropemacs"
   (interactive)
@@ -181,16 +181,32 @@
 (global-set-key "\C-cm" 'make-pprint-from-print)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+<<<<<<< HEAD
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-T" 'transpose-paragraphs)
 (global-set-key (kbd "<f9>") 'clean-copy)
 (global-set-key "\C-x\C-p" 'up-one-newline)
+=======
+(global-set-key "\M-`" 'other-frame)
+(global-set-key "\M-n" 'make-frame-command)
+>>>>>>> 0f06ea4c25b208569dfb80f48a0da2da02339efa
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-n")
+
+(load "sql-transform.el")
+(add-hook 'sql-mode-hook
+	  (function (lambda ()
+		      (local-set-key "\M-q" 'sql-to-select))))
+
+;; Don't be intelligent about how to split the window
+(setq split-height-threshold nil)
+
+;; Allow for root editing on remote machines
+(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
 
 ;; Let me define and bind keyboard macros on the fly easily
 ;; These should be a defmacro + one-liners. Oh well. 
@@ -249,8 +265,16 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(aquamacs-additional-fontsets nil t)
+ '(aquamacs-customization-version-id 212 t)
+ '(aquamacs-tool-bar-user-customization nil t)
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
+ '(default-frame-alist (quote ((vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 1) (fringe) (right-fringe) (left-fringe . 1) (internal-border-width . 0) (cursor-type . box) (foreground-color . "cornsilk") (background-color . "black") (cursor-color . "white") (border-color . "black") (background-mode . dark))))
+ '(desktop-load-locked-desktop t)
+ '(desktop-path (quote ("~/Library/Preferences/Aquamacs Emacs" "." "~" "~/.emacs.d/")))
+ '(desktop-save t)
+ '(desktop-save-mode t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -260,6 +284,7 @@
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
  '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
+ '(gud-gdb-command-name "gdb --annotate=1")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
@@ -268,6 +293,7 @@
  '(indent-tabs-mode nil)
  '(js-expr-indent-offset 4)
  '(kill-whole-line t)
+ '(large-file-warning-threshold nil)
  '(matlab-indent-level 4)
  '(matlab-keyword-list (quote ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
  '(matlab-mode-install-path (quote ("/usr/matlab/bin/toolbox/")))
@@ -278,7 +304,10 @@
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
  '(mumamo-major-modes (quote ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode) (asp-vb-mode visual-basic-mode) (javascript-mode js-mode javascript-mode espresso-mode ecmascript-mode) (java-mode jde-mode java-mode) (groovy-mode groovy-mode) (nxhtml-mode nxhtml-mode html-mode))))
+ '(ns-tool-bar-display-mode nil t)
+ '(ns-tool-bar-size-mode nil t)
  '(org-level-color-stars-only t)
+ '(py-python-command "~/venv/bin/pythonload")
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-python-command "ipython")
@@ -288,8 +317,8 @@
  '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
- '(transient-mark-mode t)
  '(user-mail-address "terral.jordan@gmail.com")
+ '(visual-line-mode nil t)
  '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
@@ -297,9 +326,13 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(debugger-mode-default ((t (:inherit autoface-default))) t)
+ '(fundamental-mode-default ((t (:inherit autoface-default))) t)
+ '(help-mode-default ((t (:inherit autoface-default))) t)
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
- '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
+ '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil)))
+ '(term-mode-default ((t (:inherit autoface-default))) t))
  
 
 (put 'upcase-region 'disabled nil)
