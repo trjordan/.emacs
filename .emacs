@@ -142,12 +142,36 @@
 
   (define-key ropemacs-local-keymap "\M-/" 'rope-code-assist)
   (define-key ropemacs-local-keymap "\C-co" 'rope-goto-definition)
-  (define-key ropemacs-local-keymap "\C-cu" 'rope-pop-mark)
+  (define-key ropemacs-local-keymap "\C-cb" 'rope-pop-mark)
   (define-key ropemacs-local-keymap "\C-cd" 'rope-show-doc)
   (define-key ropemacs-local-keymap "\C-cF" 'rope-find-occurrences)
   (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
 
 (global-set-key "\C-xpl" 'load-ropemacs)
+
+(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
+  "Kill up to the ARG'th occurence of CHAR, and leave CHAR. If
+  you are deleting forward, the CHAR is replaced and the point is
+  put before CHAR"
+  (insert char)
+  (if (< 0 arg) (forward-char -1)))
+
+(defun clean-copy () 
+  "Removes the first newline in a buffer."
+  (interactive)
+  (move-end-of-line 1)
+  (kill-line))
+
+(defun up-one-newline () 
+  "Removes the newline and all whitespace before the current point."
+  (interactive)
+  (save-excursion
+    (move-beginning-of-line nil)
+    (just-one-space 0)
+    (set-mark-command nil)
+    (previous-line)
+    (move-end-of-line 1)
+    (kill-region (point) (mark))))
 
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
@@ -165,13 +189,16 @@
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-T" 'transpose-paragraphs)
+(global-set-key (kbd "<f12>") 'clean-copy)
+(global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-n")
-(delete-selection-mode 0)
 
 (load "sql-transform.el")
 (add-hook 'sql-mode-hook
@@ -206,10 +233,34 @@
   (name-last-kbd-macro 'f8)
   (global-set-key (kbd "<f8>") 'f8)
   (message "F8 set to last macro."))
+(defun setf9 ()
+  (interactive)
+  (name-last-kbd-macro 'f9)
+  (global-set-key (kbd "<f9>") 'f9)
+  (message "F9 set to last macro."))
+(defun setf10 ()
+  (interactive)
+  (name-last-kbd-macro 'f10)
+  (global-set-key (kbd "<f10>") 'f10)
+  (message "F10 set to last macro."))
+(defun setf11 ()
+  (interactive)
+  (name-last-kbd-macro 'f11)
+  (global-set-key (kbd "<f11>") 'f11)
+  (message "F11 set to last macro."))
+(defun setf12 ()
+  (interactive)
+  (name-last-kbd-macro 'f12)
+  (global-set-key (kbd "<f12>") 'f12)
+  (message "F12 set to last macro."))
 (global-set-key (kbd "<C-f5>") 'setf5)
 (global-set-key (kbd "<C-f6>") 'setf6)
 (global-set-key (kbd "<C-f7>") 'setf7)
 (global-set-key (kbd "<C-f8>") 'setf8)
+(global-set-key (kbd "<C-f9>") 'setf9)
+(global-set-key (kbd "<C-f10>") 'setf10)
+(global-set-key (kbd "<C-f11>") 'setf11)
+(global-set-key (kbd "<C-f12>") 'setf12)
 
 ;; End of file.
 (custom-set-variables
@@ -217,16 +268,9 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(aquamacs-additional-fontsets nil t)
- '(aquamacs-customization-version-id 212 t)
- '(aquamacs-tool-bar-user-customization nil t)
+ '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
- '(default-frame-alist (quote ((vertical-scroll-bars) (tool-bar-lines . 0) (menu-bar-lines . 1) (fringe) (right-fringe) (left-fringe . 1) (internal-border-width . 0) (cursor-type . box) (foreground-color . "cornsilk") (background-color . "black") (cursor-color . "white") (border-color . "black") (background-mode . dark))))
- '(desktop-load-locked-desktop t)
- '(desktop-path (quote ("~/Library/Preferences/Aquamacs Emacs" "." "~" "~/.emacs.d/")))
- '(desktop-save t)
- '(desktop-save-mode t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -236,7 +280,6 @@
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
  '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
- '(gud-gdb-command-name "gdb --annotate=1")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark " " (name 16 -1) " " filename))))
@@ -245,7 +288,6 @@
  '(indent-tabs-mode nil)
  '(js-expr-indent-offset 4)
  '(kill-whole-line t)
- '(large-file-warning-threshold nil)
  '(matlab-indent-level 4)
  '(matlab-keyword-list (quote ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
  '(matlab-mode-install-path (quote ("/usr/matlab/bin/toolbox/")))
@@ -256,10 +298,7 @@
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
  '(mumamo-major-modes (quote ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode) (asp-vb-mode visual-basic-mode) (javascript-mode js-mode javascript-mode espresso-mode ecmascript-mode) (java-mode jde-mode java-mode) (groovy-mode groovy-mode) (nxhtml-mode nxhtml-mode html-mode))))
- '(ns-tool-bar-display-mode nil t)
- '(ns-tool-bar-size-mode nil t)
  '(org-level-color-stars-only t)
- '(py-python-command "~/venv/bin/pythonload")
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-python-command "ipython")
@@ -269,8 +308,8 @@
  '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(sort-fold-case t t)
+ '(transient-mark-mode t)
  '(user-mail-address "terral.jordan@gmail.com")
- '(visual-line-mode nil t)
  '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
