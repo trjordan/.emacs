@@ -21,7 +21,10 @@
 
 ;; The good reference on specifying fonts:
 ;; http://www.gnu.org/software/libtool/manual/emacs/Fonts.html
-(set-default-font "Menlo-12:weight=demibold")
+;;
+;; This appears to work, too.
+;; (set-default-font "Menlo-12:weight=demibold")
+(set-default-font "-apple-Menlo-medium-normal-normal-*-12-*-*-*-m-0-fontset-auto1")
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -32,7 +35,7 @@
 ;; Load in any other modes I use frequently
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
-(require 'ibuffer-git)
+;(require 'ibuffer-git)
 (require 'flymake-jslint)
 ;(remove-hook 'js-mode-hook
 ;          (lambda () (if (< (buffer-size) (* 250 1024))
@@ -112,8 +115,7 @@
 (setq term-default-fg-color "#FFFFFF")
 (require 'color-theme)
 (color-theme-initialize)
-(load "colortheme.el")
-(if (boundp 'color-theme-install) (color-theme-tr))
+(color-theme-calm-forest)
 
 ;; Set me up a python IDE!
 ;;
@@ -161,13 +163,15 @@
 (global-set-key "\C-cm" 'make-pprint-from-print)
 (global-set-key "\C-c\C-o" 'c-set-offset)
 (global-set-key "\C-cr" (lambda () (interactive) (revert-buffer t t)))
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
 (global-unset-key "\C-x\C-n")
-(delete-selection-mode 1)
+(delete-selection-mode 0)
 
 (load "sql-transform.el")
 (add-hook 'sql-mode-hook
@@ -235,7 +239,7 @@
  '(gud-gdb-command-name "gdb --annotate=1")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
- '(ibuffer-formats (quote ((mark modified read-only " " (name 18 18 :left :elide) " " (size 9 -1 :right) " " (mode 16 16 :left :elide) " " (git-status 8 8 :left) " " filename-and-process) (mark " " (name 16 -1) " " filename))))
+ '(ibuffer-formats (quote ((mark " " (name 16 -1) " " filename))))
  '(ibuffer-git-column-length 8)
  '(ido-mode (quote both) nil (ido))
  '(indent-tabs-mode nil)
@@ -274,13 +278,9 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- '(debugger-mode-default ((t (:inherit autoface-default))) t)
- '(fundamental-mode-default ((t (:inherit autoface-default))) t)
- '(help-mode-default ((t (:inherit autoface-default))) t)
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
- '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil)))
- '(term-mode-default ((t (:inherit autoface-default))) t))
+ '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
  
 
 (put 'upcase-region 'disabled nil)
