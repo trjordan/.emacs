@@ -27,8 +27,9 @@
 (setq apple-font "-apple-Menlo-medium-normal-normal-*-12-*-*-*-m-0-fontset-auto1")
 (setq linux-font "Bitstream Vera Sans Mono-10.5")
 (if (member apple-font (font-family-list))
-    (set-default-font apple-font)
-    (set-default-font linux-font)) 
+    (setq preferred-font apple-font)
+    (setq preferred-font linux-font)) 
+(set-default-font preferred-font)
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -152,6 +153,41 @@
   (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
 
 (global-set-key "\C-xpl" 'load-ropemacs)
+
+(setq dev-ini-buffer-name "development.ini")
+
+;; Some functions for easily changing the logging level in python ini files
+(defun change-logging-inter () 
+  (interactive)
+  (let ((section (read-string "Handler to change [sqlalchemy]: " nil nil "sqlalchemy"))
+        (level (read-string "Logging level [WARN]: " nil nil "WARN")))
+    (change-logging section level)))
+
+(defun change-logging (section level) 
+  (interactive)
+  (let ((cur (current-buffer)))
+    (save-current-buffer
+      (set-buffer (get-buffer-create (current-buffer)))
+      (switch-to-buffer dev-ini-buffer-name)
+      (goto-char (point-min))
+      (search-forward (concat "[logger_" (downcase section) "]"))
+      (search-forward-regexp (concat "level =.*"))
+      (replace-match (concat "level = " (upcase level)))
+      (save-buffer)
+      (switch-to-buffer cur))))
+
+(defun enable-filters-logging ()
+  (interactive)
+  (change-logging "filters" "DEBUG"))
+(defun disable-filters-logging () 
+  (interactive)
+  (change-logging "filters" "WARN"))
+(defun enable-sqlalchemy-logging ()
+  (interactive)
+  (change-logging "sqlalchemy" "INFO"))
+(defun disable-sqlalchemy-logging ()
+  (interactive)
+  (change-logging "sqlalchemy" "WARN"))
 
 (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
   "Kill up to the ARG'th occurence of CHAR, and leave CHAR. If
