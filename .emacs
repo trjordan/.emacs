@@ -24,7 +24,11 @@
 ;;
 ;; This appears to work, too.
 ;; (set-default-font "Menlo-12:weight=demibold")
-(set-default-font "-apple-Menlo-medium-normal-normal-*-12-*-*-*-m-0-fontset-auto1")
+(setq apple-font "-apple-Menlo-medium-normal-normal-*-12-*-*-*-m-0-fontset-auto1")
+(setq linux-font "Bitstream Vera Sans Mono-10.5")
+(if (member apple-font (font-family-list))
+    (set-default-font apple-font)
+    (set-default-font linux-font)) 
 
 ;; Open the main projects dir
 (find-file "~/repos")
