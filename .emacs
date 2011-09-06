@@ -43,9 +43,9 @@
 (load "dired-x")
 ;(require 'ibuffer-git)
 (require 'flymake-jslint)
-;(remove-hook 'js-mode-hook
-;          (lambda () (if (< (buffer-size) (* 250 1024))
-;                         (flymake-mode nil))))
+(add-hook 'js-mode-hook
+          (lambda () (if (< (buffer-size) (* 250 1024))
+                         (flymake-mode nil))))
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)

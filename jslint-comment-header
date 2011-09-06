@@ -1,1 +1,16 @@
-/*jslint nomen: false, white: false, forin: true, maxlen: 120, regexp: false, newcap: true, onevar: false, plusplus: false*/ /*global Ext: false, TST: false, configuration: false, google: false, window: false, HAITI: false, UDOP: false, document: false*/
+/*jslint nomen: false,
+  white: false,
+  forin: true,
+  maxlen: 120,
+  regexp: false,
+  newcap: true,
+  onevar: false,
+  devel: true,
+  plusplus: false*/
+
+/*global $: false,
+         DEBUG: false,
+         tl: true,
+         jQuery: false,
+         window: false,
+         document: false*/

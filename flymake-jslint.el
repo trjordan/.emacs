@@ -6,7 +6,7 @@
          (local-file (file-relative-name
                       temp-file
                       (file-name-directory buffer-file-name))))
-    (list (expand-file-name "~/.emacs.d/run_jslint.sh") (list local-file))))
+    (list (expand-file-name "~/repos/tracelons/tracelytics/run_jslint.sh") (list local-file))))
 
 (setq flymake-allowed-file-name-masks
       (cons '(".+\\.js$"
