@@ -24,10 +24,10 @@
 ;;
 ;; This appears to work, too.
 ;; (set-default-font "Menlo-12:weight=demibold")
-(setq apple-font "-apple-Menlo-medium-normal-normal-*-12-*-*-*-m-0-fontset-auto1")
+(setq apple-font "-apple-Menlo-medium-normal-normal-*-10.5-*-*-*-m-0-fontset-auto1")
 (setq linux-font "Bitstream Vera Sans Mono-10.5")
 (setq linux-font "-bitstream-Bitstream Vera Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-fontset-auto1")
-(if (member apple-font (font-family-list))
+(if (member "Menlo" (font-family-list))
     (setq preferred-font apple-font)
     (setq preferred-font linux-font)) 
 (set-default-font preferred-font) 
