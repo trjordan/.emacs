@@ -8,9 +8,29 @@
   devel: true,
   plusplus: false*/
 
-/*global $: false,
-         DEBUG: false,
+/*global DEBUG: true,
          tl: true,
+         funk: false,
+
+         agent_colors_table: true,
+         agent_colors: true,
+         arraysEqual: true,
+         timeWindowText: true,
+         steptotext: true,
+         extraParams: true,
+
+         getAnnotations: true,
+         updateAnnotations: true,
+         annotationCb: true,
+         tlseries: true,
+
+         $: false,
          jQuery: false,
+         pv: false,
+         ko: false,
+         _gaq: false,
+
+         Exception: false,
          window: false,
-         document: false*/
+         document: false,
+         console: true*/
