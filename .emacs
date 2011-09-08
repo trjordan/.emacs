@@ -46,6 +46,7 @@
 (add-hook 'js-mode-hook
           (lambda () (if (< (buffer-size) (* 250 1024))
                          (flymake-mode nil))))
+(require 'flymake-pylint)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
@@ -318,6 +319,7 @@
  '(dvc-tips-enabled nil)
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
+ '(flymake-js-engine (quote rhino))
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
  '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
