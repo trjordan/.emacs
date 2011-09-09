@@ -16,7 +16,7 @@
             flymake-allowed-file-name-masks))
 
 (setq flymake-err-line-patterns 
-      (cons '("^.+:\\([[:digit:]]+\\),\\([[:digit:]]+\\):.*:\\(.+\\)$"
+      (cons '("^.+: *\\([[:digit:]]+\\), *\\([[:digit:]]+\\)\\(:.+\\)?:\\(.+\\)$"
               nil 1 2 3)
             flymake-err-line-patterns))
 
