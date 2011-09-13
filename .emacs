@@ -326,7 +326,6 @@
  '(dvc-tips-enabled nil)
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
- '(flymake-js-engine (quote rhino))
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
  '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
