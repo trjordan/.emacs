@@ -46,6 +46,7 @@
           (lambda () (if (< (buffer-size) (* 250 1024))
                          (flymake-mode nil))))
 (require 'flymake-pylint)
+(add-hook 'python-mode flymake-mode)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
@@ -214,6 +215,11 @@
     (move-end-of-line 1)
     (kill-region (point) (mark))))
 
+(defun ensure-flymake ()
+  (interactive)
+  (flymake-mode t)
+  (flymake-start-syntax-check))
+
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
@@ -236,6 +242,8 @@
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
+(global-set-key "\C-c\C-e" 'ensure-flymake)
+(global-set-key "\C-c\e" 'ensure-flymake)
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
