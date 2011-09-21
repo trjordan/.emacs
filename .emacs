@@ -123,6 +123,9 @@
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-calm-forest)
+(setq ansi-term-color-vector 
+      [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
+                   "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
 
 ;; Set me up a python IDE!
 ;;
@@ -237,13 +240,13 @@
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-T" 'transpose-paragraphs)
+(global-set-key "\C-t" 'transpose-chars)
 (global-set-key (kbd "<f12>") 'clean-copy)
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 (global-set-key "\C-c\C-e" 'ensure-flymake)
-(global-set-key "\C-c\e" 'ensure-flymake)
+(global-set-key "\C-ce" 'ensure-flymake)
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
@@ -317,6 +320,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ansi-color-for-comint-mode t)
  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
