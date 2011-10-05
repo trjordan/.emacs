@@ -2,6 +2,9 @@
 ;;; TR's .emacs file
 ;;;
 
+;; Stupid desktop-save hack ... UTF-8 problem? Not really sure.
+(setq Î 206)
+
 (require 'desktop)
 (desktop-save-mode 1)
 (setq desktop-dirname "~/.emacs.d/")
@@ -42,9 +45,11 @@
 (load "dired-x")
 ;(require 'ibuffer-git)
 (require 'flymake-jslint)
-(add-hook 'js-mode-hook
-          (lambda () (if (< (buffer-size) (* 250 1024))
-                         (flymake-mode nil))))
+(defun my-jslint-hook () 
+  (if (and (< (buffer-size) (* 250 1024))
+           buffer-file-name)
+      (flymake-mode 1)))
+(add-hook 'js-mode-hook 'my-jslint-hook)
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
 
@@ -261,7 +266,8 @@
 (setq split-height-threshold nil)
 
 ;; Allow for root editing on remote machines
-(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+;; (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+(set-default 'tramp-default-proxies-alist '())
 
 ;; Let me define and bind keyboard macros on the fly easily
 ;; These should be a defmacro + one-liners. Oh well. 
@@ -355,7 +361,9 @@
  '(org-level-color-stars-only t)
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
+ '(python-honour-comment-indentation nil)
  '(python-python-command "ipython")
+ '(python-use-skeletons nil)
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
  '(ropemacs-enable-shortcuts nil)
