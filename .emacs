@@ -228,6 +228,31 @@
   (flymake-mode t)
   (flymake-start-syntax-check))
 
+;; Direct access to certain buffers
+(defun goto-buffer-func (key)
+  (interactive)
+  (lexical-let ((buf (buffer-name)))
+    (global-set-key 
+     key (lambda () 
+           (interactive)
+           (switch-to-buffer buf)))))
+
+(defun set-goto-buffer-func (setkey gokey)
+  (lexical-let ((newgokey gokey))
+    (global-set-key setkey (lambda () 
+                             (interactive) 
+                             (goto-buffer-func newgokey)))))
+
+(set-goto-buffer-func [?\C-!] [?\C-1])
+(set-goto-buffer-func [?\C-@] [?\C-2])
+(set-goto-buffer-func [?\C-#] [?\C-3])
+(set-goto-buffer-func [?\C-$] [?\C-4])
+(set-goto-buffer-func [?\C-%] [?\C-5])
+(set-goto-buffer-func [?\C-^] [?\C-6])
+(set-goto-buffer-func [?\C-&] [?\C-7])
+(set-goto-buffer-func [?\C-*] [?\C-8])
+(set-goto-buffer-func [?\C-(] [?\C-9])
+
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
