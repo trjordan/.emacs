@@ -127,6 +127,15 @@
       [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
 
+;; Haskell mode
+(load "~/.emacs.d/haskell-mode/haskell-site-file")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
+
+
 ;; Set me up a python IDE!
 ;;
 ;; Installations require the following:
