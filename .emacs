@@ -41,6 +41,7 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 ;(require 'ibuffer-git)
+(require 'markdown-mode)
 (require 'flymake-jslint)
 (add-hook 'js-mode-hook
           (lambda () (if (< (buffer-size) (* 250 1024))
@@ -61,6 +62,8 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
+(add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
