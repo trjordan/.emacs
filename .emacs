@@ -19,7 +19,7 @@
 (setq load-path (append (list "~/.emacs.d") load-path))
 
 ;; Turn of the menu bars
-(menu-bar-mode nil)
+(menu-bar-mode 0)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
 ;; The good reference on specifying fonts:
@@ -44,6 +44,7 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 ;(require 'ibuffer-git)
+(require 'markdown-mode)
 (require 'flymake-jslint)
 (defun my-jslint-hook () 
   (if (and (< (buffer-size) (* 250 1024))
@@ -66,6 +67,8 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
+(add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
@@ -131,6 +134,15 @@
 (setq ansi-term-color-vector 
       [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
+
+;; Haskell mode
+(load "~/.emacs.d/haskell-mode/haskell-site-file")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
+
 
 ;; Set me up a python IDE!
 ;;
