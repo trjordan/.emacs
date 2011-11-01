@@ -251,7 +251,6 @@
 (set-goto-buffer-func [?\C-^] [?\C-6])
 (set-goto-buffer-func [?\C-&] [?\C-7])
 (set-goto-buffer-func [?\C-*] [?\C-8])
-(set-goto-buffer-func [?\C-(] [?\C-9])
 
 ;; Bind some keys for me
 (global-set-key "\C-cg" 'goto-line)
