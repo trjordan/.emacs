@@ -264,7 +264,40 @@
 (set-goto-buffer-func [?\C-&] [?\C-7])
 (set-goto-buffer-func [?\C-*] [?\C-8])
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Provide a way to run nose directly
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Root directory of tracelons repo
+(setq tracelons-dir "~/repos/tracelons/")
+;; Value for CELERY_CONFIG_MODULE
+(setq tracelons-etl-config "etl.config")
+;; Development.ini -- can be relative to tracelons/tracelytics
+(setq tracelons-ini "development.ini")
+
+(defun tracelons-web-nose-cmd () 
+  (concat "nosetests --with-pylons=" tracelons-ini))
+(defun tracelons-etl-nose-cmd () 
+  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " nosetests"))
+
+(defun run-nose (root test-cmd)
+  "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
+  (shell-command (concat "cd " tracelons-dir root " && " test-cmd " "
+                         (expand-file-name buffer-file-name)
+                         " &")))
+
+(defun run-etl-test ()
+  (interactive)
+  (run-nose "transformer" (tracelons-etl-nose-cmd)))
+
+(defun run-web-test ()
+  (interactive)
+  (run-nose "tracelytics" (tracelons-web-nose-cmd)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Bind some keys for me
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (global-set-key "\C-cg" 'goto-line)
 (global-set-key "\C-ca" 'align-regexp)
 (global-set-key "\C-cf" 'vc-git-grep)
