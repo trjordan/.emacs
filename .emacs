@@ -19,7 +19,7 @@
 (setq load-path (append (list "~/.emacs.d") load-path))
 
 ;; Turn of the menu bars
-(menu-bar-mode 0)
+(menu-bar-mode nil)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
 ;; The good reference on specifying fonts:
