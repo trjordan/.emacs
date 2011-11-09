@@ -331,8 +331,10 @@
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
-(global-set-key "\C-c\C-e" 'ensure-flymake)
 (global-set-key "\C-ce" 'ensure-flymake)
+(global-set-key "\C-c\C-e" (lambda () 
+                             (interactive) 
+                             (shell-command (concat "run_pylint.sh " buffer-file-name " &"))))
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
