@@ -282,6 +282,7 @@
 
 (defun run-nose (root test-cmd)
   "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
+  (save-buffer)
   (shell-command (concat "cd " tracelons-dir root " && " test-cmd " "
                          (expand-file-name buffer-file-name)
                          " &")))
