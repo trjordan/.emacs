@@ -294,6 +294,18 @@
   (interactive)
   (run-nose "tracelytics" (tracelons-web-nose-cmd)))
 
+;; Insert the current filename with f3
+(define-key minibuffer-local-map
+  "\C-n" (lambda () (interactive) 
+       (insert (buffer-name (current-buffer-not-mini)))))
+
+(defun current-buffer-not-mini ()
+  "Return current-buffer if current buffer is not the *mini-buffer*
+  else return buffer before minibuf is activated."
+  (if (not (window-minibuffer-p)) (current-buffer)
+      (if (eq (get-lru-window) (next-window))
+    	  (window-buffer (previous-window)) (window-buffer (next-window)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Bind some keys for me
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
