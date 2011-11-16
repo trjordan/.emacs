@@ -282,6 +282,7 @@
 
 (defun run-nose (root test-cmd)
   "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
+  (save-buffer)
   (shell-command (concat "cd " tracelons-dir root " && " test-cmd " "
                          (expand-file-name buffer-file-name)
                          " &")))
@@ -293,6 +294,18 @@
 (defun run-web-test ()
   (interactive)
   (run-nose "tracelytics" (tracelons-web-nose-cmd)))
+
+;; Insert the current filename with f3
+(define-key minibuffer-local-map
+  "\C-n" (lambda () (interactive) 
+       (insert (buffer-name (current-buffer-not-mini)))))
+
+(defun current-buffer-not-mini ()
+  "Return current-buffer if current buffer is not the *mini-buffer*
+  else return buffer before minibuf is activated."
+  (if (not (window-minibuffer-p)) (current-buffer)
+      (if (eq (get-lru-window) (next-window))
+    	  (window-buffer (previous-window)) (window-buffer (next-window)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Bind some keys for me
@@ -319,8 +332,10 @@
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
-(global-set-key "\C-c\C-e" 'ensure-flymake)
 (global-set-key "\C-ce" 'ensure-flymake)
+(global-set-key "\C-c\C-e" (lambda () 
+                             (interactive) 
+                             (shell-command (concat "run_pylint.sh " buffer-file-name " &"))))
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
