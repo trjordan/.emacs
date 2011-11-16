@@ -432,6 +432,7 @@
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
  '(dvc-tips-enabled nil)
+ '(exec-path (quote ("/venv/bin" "/home/trjordan/bin/" "/venv/bin" "/home/trjordan/bin/" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/lib/emacs/23.3/x86_64-linux-gnu" "~/scripts/")))
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
