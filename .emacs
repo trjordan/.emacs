@@ -183,7 +183,7 @@
     (let ((buf (buffer-name)))
       (switch-to-buffer name t)
       (if (eq major-mode 'python-mode)
-          (ropemacs-mode)))))
+          (ropemacs-mode t)))))
 
 (set-rope-buffer "controllers/hosts.py")
 
