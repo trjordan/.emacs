@@ -53,6 +53,7 @@
 (add-hook 'js-mode-hook 'my-jslint-hook)
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
+(require 'thrift-mode)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
@@ -118,7 +119,7 @@
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql")
-(djcb-program-shortcut (kbd "<S-f5>") "cassandra" "cassandra-cli --host 127.0.0.1" )
+(djcb-program-shortcut (kbd "<S-f5>") "summaryservice" "ss && python summaryservice.py")
 (djcb-program-shortcut (kbd "<S-f6>") "tf" "cd ~/repos/tracelons/transformer/etl && runtf")
 (djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
@@ -290,9 +291,9 @@
 (setq tracelons-ini "development.ini")
 
 (defun tracelons-web-nose-cmd () 
-  (concat "nosetests --with-pylons=" tracelons-ini))
+  (concat "/venv/bin/nosetests --with-pylons=" tracelons-ini))
 (defun tracelons-etl-nose-cmd () 
-  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " nosetests"))
+  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " /venv/bin/nosetests"))
 
 (defun run-nose (root test-cmd)
   "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
