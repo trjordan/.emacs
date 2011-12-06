@@ -61,6 +61,7 @@
 
 (load "flymake-cursor.el")
 (load "~/.emacs.d/nxhtml/autostart.el")
+(load "camelcase.el")
 (require 'ourcomments-widgets)
 
 ;; Change some file associations
