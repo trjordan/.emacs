@@ -53,6 +53,7 @@
 (add-hook 'js-mode-hook 'my-jslint-hook)
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
+(require 'thrift-mode)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
@@ -118,7 +119,7 @@
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql")
-(djcb-program-shortcut (kbd "<S-f5>") "cassandra" "cassandra-cli --host 127.0.0.1" )
+(djcb-program-shortcut (kbd "<S-f5>") "summaryservice" "ss && python summaryservice.py")
 (djcb-program-shortcut (kbd "<S-f6>") "tf" "cd ~/repos/tracelons/transformer/etl && runtf")
 (djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
@@ -177,6 +178,20 @@
 (global-set-key "\C-xpl" 'load-ropemacs)
 
 (setq dev-ini-buffer-name "development.ini")
+
+(defun set-rope-buffer (name)
+  (save-excursion 
+    (let ((buf (buffer-name)))
+      (switch-to-buffer name t)
+      (if (eq major-mode 'python-mode)
+          (ropemacs-mode t)))))
+
+(set-rope-buffer "controllers/hosts.py")
+
+(defun set-rope-all () 
+  (interactive)
+  (mapcar 'set-rope-buffer (buffer-list)))
+
 
 ;; Some functions for easily changing the logging level in python ini files
 (defun change-logging-inter () 
@@ -278,7 +293,7 @@
 (defun tracelons-web-nose-cmd () 
   (concat "/venv/bin/nosetests --with-pylons=" tracelons-ini))
 (defun tracelons-etl-nose-cmd () 
-  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " nosetests"))
+  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " /venv/bin/nosetests"))
 
 (defun run-nose (root test-cmd)
   "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
@@ -418,6 +433,7 @@
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
  '(dvc-tips-enabled nil)
+ '(exec-path (quote ("/venv/bin" "/home/trjordan/bin/" "/venv/bin" "/home/trjordan/bin/" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/lib/emacs/23.3/x86_64-linux-gnu" "~/scripts/")))
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
