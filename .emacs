@@ -276,7 +276,7 @@
 (setq tracelons-ini "development.ini")
 
 (defun tracelons-web-nose-cmd () 
-  (concat "nosetests --with-pylons=" tracelons-ini))
+  (concat "/venv/bin/nosetests --with-pylons=" tracelons-ini))
 (defun tracelons-etl-nose-cmd () 
   (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " nosetests"))
 
