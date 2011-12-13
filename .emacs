@@ -54,6 +54,7 @@
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
 (require 'thrift-mode)
+(setq flymake-max-parallel-syntax-checks 8)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
