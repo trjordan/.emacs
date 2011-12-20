@@ -55,6 +55,7 @@
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
 (require 'thrift-mode)
+(setq flymake-max-parallel-syntax-checks 8)
 
 ;; Add some places to the path
 (if (< emacs-major-version 23)
@@ -62,6 +63,7 @@
 
 (load "flymake-cursor.el")
 (load "~/.emacs.d/nxhtml/autostart.el")
+(load "camelcase.el")
 (require 'ourcomments-widgets)
 
 ;; Change some file associations
