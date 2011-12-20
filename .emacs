@@ -15,8 +15,9 @@
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
 
-;; Set up my path
+;; Set up my path, in emacs and out
 (setq load-path (append (list "~/.emacs.d") load-path))
+(setenv "PATH" (concat (expand-file-name "~/") "bin" ":" (getenv "PATH")))
 
 ;; Turn of the menu bars
 (menu-bar-mode 0)
@@ -185,8 +186,6 @@
       (switch-to-buffer name t)
       (if (eq major-mode 'python-mode)
           (ropemacs-mode t)))))
-
-(set-rope-buffer "controllers/hosts.py")
 
 (defun set-rope-all () 
   (interactive)
@@ -433,7 +432,7 @@
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
  '(dvc-tips-enabled nil)
- '(exec-path (quote ("/venv/bin" "/home/trjordan/bin/" "/venv/bin" "/home/trjordan/bin/" "/usr/local/sbin" "/usr/local/bin" "/usr/sbin" "/usr/bin" "/sbin" "/bin" "/usr/games" "/usr/lib/emacs/23.3/x86_64-linux-gnu" "~/scripts/")))
+ '(exec-path (quote ("~/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
@@ -470,6 +469,7 @@
  '(ropemacs-enable-shortcuts nil)
  '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
+ '(shell-file-name "/bin/bash")
  '(sort-fold-case t t)
  '(transient-mark-mode t)
  '(user-mail-address "terral.jordan@gmail.com")
