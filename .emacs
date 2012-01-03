@@ -14,6 +14,7 @@
   (if (eq (desktop-owner) (emacs-pid))
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
@@ -31,8 +32,8 @@
 (setq linux-font "Bitstream Vera Sans Mono-9")
 (if (member "Menlo" (font-family-list))
     (setq preferred-font apple-font)
-    (setq preferred-font linux-font)) 
-(set-default-font preferred-font) 
+    (setq preferred-font linux-font))
+(set-default-font preferred-font)
 
 ;; Open the main projects dir
 (find-file "~/repos")
@@ -46,7 +47,7 @@
 ;(require 'ibuffer-git)
 (require 'markdown-mode)
 (require 'flymake-jslint)
-(defun my-jslint-hook () 
+(defun my-jslint-hook ()
   (if (and (< (buffer-size) (* 250 1024))
            buffer-file-name)
       (flymake-mode 1)))
@@ -103,9 +104,9 @@
       (if cmd (process-send-string bufname (concat cmd "\n"))))))
 
 (defmacro djcb-program-shortcut (key &optional fullname cmd)
-  "* macro to create a key binding KEY to start some terminal program PRG; 
+  "* macro to create a key binding KEY to start some terminal program PRG;
     if USE-EXISTING is true, try to switch to an existing buffer"
-  `(global-set-key ,key 
+  `(global-set-key ,key
      '(lambda()
         (interactive)
         (djcb-term-start-or-switch "bash" t ,fullname ,cmd))))
@@ -134,7 +135,7 @@
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-calm-forest)
-(setq ansi-term-color-vector 
+(setq ansi-term-color-vector
       [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
 
@@ -150,9 +151,9 @@
 ;; Set me up a python IDE!
 ;;
 ;; Installations require the following:
-;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz 
+;; ropemacs: pip install http://bitbucket.org/agr/ropemacs/get/tip.tar.gz
 ;; pymacs: apt-get install pymacs (OS X: clone from repo, sudo make install)
-;; ropemode: pip install ropemode 
+;; ropemode: pip install ropemode
 ;; rope: apt-get install rope (OS X: clone bitbucket repo, python setup.py install)
 ;; ropemacs: ??? (OS X: clone bitbucket repo, python setup.py install)
 ;;
@@ -182,7 +183,7 @@
 (setq dev-ini-buffer-name "development.ini")
 
 (defun set-rope-buffer (name)
-  (save-excursion 
+  (save-excursion
     (let ((buf (buffer-name)))
       (switch-to-buffer name t)
       (if (eq major-mode 'python-mode)
@@ -190,19 +191,19 @@
 
 (set-rope-buffer "controllers/hosts.py")
 
-(defun set-rope-all () 
+(defun set-rope-all ()
   (interactive)
   (mapcar 'set-rope-buffer (buffer-list)))
 
 
 ;; Some functions for easily changing the logging level in python ini files
-(defun change-logging-inter () 
+(defun change-logging-inter ()
   (interactive)
   (let ((section (read-string "Handler to change [sqlalchemy]: " nil nil "sqlalchemy"))
         (level (read-string "Logging level [WARN]: " nil nil "WARN")))
     (change-logging section level)))
 
-(defun change-logging (section level) 
+(defun change-logging (section level)
   (interactive)
   (let ((cur (current-buffer)))
     (save-current-buffer
@@ -218,7 +219,7 @@
 (defun enable-filters-logging ()
   (interactive)
   (change-logging "filters" "DEBUG"))
-(defun disable-filters-logging () 
+(defun disable-filters-logging ()
   (interactive)
   (change-logging "filters" "WARN"))
 (defun enable-sqlalchemy-logging ()
@@ -235,13 +236,13 @@
   (insert char)
   (if (< 0 arg) (forward-char -1)))
 
-(defun clean-copy () 
+(defun clean-copy ()
   "Removes the first newline in a buffer."
   (interactive)
   (move-end-of-line 1)
   (kill-line))
 
-(defun up-one-newline () 
+(defun up-one-newline ()
   "Removes the newline and all whitespace before the current point."
   (interactive)
   (save-excursion
@@ -261,15 +262,15 @@
 (defun goto-buffer-func (key)
   (interactive)
   (lexical-let ((buf (buffer-name)))
-    (global-set-key 
-     key (lambda () 
+    (global-set-key
+     key (lambda ()
            (interactive)
            (switch-to-buffer buf)))))
 
 (defun set-goto-buffer-func (setkey gokey)
   (lexical-let ((newgokey gokey))
-    (global-set-key setkey (lambda () 
-                             (interactive) 
+    (global-set-key setkey (lambda ()
+                             (interactive)
                              (goto-buffer-func newgokey)))))
 
 (set-goto-buffer-func [?\C-!] [?\C-1])
@@ -292,9 +293,9 @@
 ;; Development.ini -- can be relative to tracelons/tracelytics
 (setq tracelons-ini "development.ini")
 
-(defun tracelons-web-nose-cmd () 
+(defun tracelons-web-nose-cmd ()
   (concat "/venv/bin/nosetests --with-pylons=" tracelons-ini))
-(defun tracelons-etl-nose-cmd () 
+(defun tracelons-etl-nose-cmd ()
   (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " /venv/bin/nosetests"))
 
 (defun run-nose (root test-cmd)
@@ -314,7 +315,7 @@
 
 ;; Insert the current filename with f3
 (define-key minibuffer-local-map
-  "\C-n" (lambda () (interactive) 
+  "\C-n" (lambda () (interactive)
        (insert (buffer-name (current-buffer-not-mini)))))
 
 (defun current-buffer-not-mini ()
@@ -350,8 +351,8 @@
 (global-set-key "\M-`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 (global-set-key "\C-ce" 'ensure-flymake)
-(global-set-key "\C-c\C-e" (lambda () 
-                             (interactive) 
+(global-set-key "\C-c\C-e" (lambda ()
+                             (interactive)
                              (shell-command (concat "run_pylint.sh " buffer-file-name " &"))))
 
 ;; God these defaults are annoying
@@ -371,7 +372,7 @@
 (set-default 'tramp-default-proxies-alist '())
 
 ;; Let me define and bind keyboard macros on the fly easily
-;; These should be a defmacro + one-liners. Oh well. 
+;; These should be a defmacro + one-liners. Oh well.
 (defun setf5 ()
   (interactive)
   (name-last-kbd-macro 'f5)
@@ -485,7 +486,7 @@
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
- 
+
 
 (put 'upcase-region 'disabled nil)
 
