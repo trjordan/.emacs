@@ -7073,7 +7073,7 @@ This list consists of four chunks at these positions:
 ;;                  (eq indentor-buffer mumamo-template-indent-buffer)
 ;;                  (string= chunk-str (overlay-get indentor 'indentor-chunk-string)))
 ;;       (when indentor
-;;         (when (buffer-live-p 
+;;         (when (buffer-live-p
 ;;     indentor
 ;;     ))
 (defun mumamo-indentor-valid (indentor chunk chunk-string)

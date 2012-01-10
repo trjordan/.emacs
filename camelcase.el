@@ -12,7 +12,7 @@
 ;; of "Showing This To Jim Weirich" (beacuse he expressed interest in
 ;; the camelcase defun) and have just marked the offending code and
 ;; left it unfixed.
-;; 
+;;
 ;; Help me, Obi-Wan Weirichobi, you're my only hope!
 ;; ----------------------------------------------------------------------
 ;; camelcase-region Given a region of text in snake_case format,
@@ -27,7 +27,7 @@
 
 ;; ----------------------------------------------------------------------
 ;; cadged largely from http://xahlee.org/emacs/elisp_idioms.html:
-;; 
+;;
 (defun camelcase-word-or-region ()
   "Changes word or region from snake_case to camelCase"
   (interactive)

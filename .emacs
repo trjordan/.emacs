@@ -16,6 +16,7 @@
 (add-hook 'auto-save-hook 'my-desktop-save)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+
 ;; Set up my path
 (setq load-path (append (list "~/.emacs.d") load-path))
 
@@ -45,6 +46,7 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 ;(require 'ibuffer-git)
+(require 'magit)
 (require 'markdown-mode)
 (require 'flymake-jslint)
 (defun my-jslint-hook ()
@@ -121,7 +123,7 @@
 (djcb-program-shortcut (kbd "<S-f8>") "shell" "tl")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
-(djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql")
+(djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
 (djcb-program-shortcut (kbd "<S-f5>") "summaryservice" "ss && python summaryservice.py")
 (djcb-program-shortcut (kbd "<S-f6>") "tf" "cd ~/repos/tracelons/transformer/etl && runtf")
 (djcb-program-shortcut (kbd "<S-f7>") "etl" "cd ~/repos/tracelons/transformer/etl && runetl -B")
