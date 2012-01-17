@@ -47,7 +47,7 @@
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 ;(require 'ibuffer-git)
-(require 'magit)
+(require 'less)
 (require 'markdown-mode)
 (require 'flymake-jslint)
 (defun my-jslint-hook ()
