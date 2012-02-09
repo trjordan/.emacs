@@ -42,6 +42,7 @@
 
 ;; Spaces, not tabs!
 (setq c-basic-offset 4)
+(setq nxml-child-indent 4)
 
 ;; Load in any other modes I use frequently
 (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
@@ -85,6 +86,9 @@
 
 ; Load my keyboard macros
 (load "kbd-macros.el")
+
+; Really, compatability mode? Apparently this isn't here until Emacs 24
+(unless (fboundp 'prog-mode) (defalias 'prog-mode 'fundamental-mode))
 
 (defun my-offsets ()
   (c-set-offset 'arglist-intro '+)
@@ -174,12 +178,12 @@
   ;; Automatically save project python buffers before refactorings
   (setq ropemacs-confirm-saving 'nil)
 
-  (define-key ropemacs-local-keymap "\M-/" 'rope-code-assist)
+  (define-key ropemacs-local-keymap "\M-/" 'rope-lucky-assist)
   (define-key ropemacs-local-keymap "\C-co" 'rope-goto-definition)
   (define-key ropemacs-local-keymap "\C-cb" 'rope-pop-mark)
   (define-key ropemacs-local-keymap "\C-cd" 'rope-show-doc)
   (define-key ropemacs-local-keymap "\C-cF" 'rope-find-occurrences)
-  (define-key ropemacs-local-keymap "\M-?" 'rope-lucky-assist))
+  (define-key ropemacs-local-keymap "\M-?" 'rope-code-assist))
 
 (global-set-key "\C-xpl" 'load-ropemacs)
 
