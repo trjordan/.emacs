@@ -1,0 +1,7 @@
+# -*- coding: utf-8; mode: snippet -*-
+# name: meth
+# contributor: David Miller <david@deadpansincerity.com>
+# --
+$1.prototype.$2 = $3(${4:args}) {
+    $5
+};
