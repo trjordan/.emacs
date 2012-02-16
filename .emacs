@@ -56,8 +56,7 @@
            buffer-file-name)
       (flymake-mode 1)))
 (add-hook 'js-mode-hook 'my-jslint-hook)
-(add-to-list 'load-path "~/.emacs.d/yasnippet")
-(require 'yasnippet) ;; not yasnippet-bundle
+(require 'yasnippet-bundle)
 (yas/global-mode 1)
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)

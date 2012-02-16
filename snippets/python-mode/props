@@ -1,10 +1,15 @@
 # contributor: TR Jordan <terral.jordan@gmail.com>
-# name: prop
-# key: prop
+# name: props
+# key: props
 # --
 @property
 def ${1:foo)(self):
     """${2:Doc string}"""
     return self._$1
+
+@$1.setter
+def $1(self, value):
+    """Sets $1"""
+    self._$1 = value
 
 $0
