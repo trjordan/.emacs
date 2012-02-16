@@ -36,6 +36,7 @@ class ${1:ClassName}(${2:object}):
              (list "" "Arguments:" args (make-string 3 34))
              indent)))
         }
+        super($1, self).__init__($4)
         ${4:$
         (mapconcat
          '(lambda (x)
