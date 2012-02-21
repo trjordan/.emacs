@@ -138,6 +138,20 @@
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
 (global-set-key "\C-cy" 'my-term-paste)
 
+;; Couple functions that rename common buffers to better names for me
+(defun prepend-one-dir ()
+  "Renames a buffer with the parent folder name"
+  (interactive)
+  (let ((pkg (first (last (split-string (buffer-file-name) "/") 2))))
+    (rename-buffer (concat pkg "/" (buffer-name)))))
+
+(defun prepend-hook ()
+  (let ((filename (car (last (split-string (buffer-file-name) "/")))))
+    (if (member filename '("__init__.py", "index.html"))
+        (prepend-one-dir))))
+
+(add-hook 'find-file-hook 'prepend-hook)
+
 ;; Fix the color in terminals, and load my color theme
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
