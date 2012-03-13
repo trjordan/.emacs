@@ -147,7 +147,8 @@
 
 (defun prepend-hook ()
   (let ((filename (car (last (split-string (buffer-file-name) "/")))))
-    (if (member filename '("__init__.py", "index.html"))
+    (if (and (member filename '("__init__.py", "index.html"))
+             (not (string-match "/" (buffer-name))))
         (prepend-one-dir))))
 
 (add-hook 'find-file-hook 'prepend-hook)
