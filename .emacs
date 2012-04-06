@@ -387,6 +387,11 @@
 	  (function (lambda ()
 		      (local-set-key "\M-q" 'sql-to-select))))
 
+;; Swap some keys on OS X
+(setq mac-command-modifier 'control)
+(setq mac-control-modifier 'meta)
+(setq mac-option-modifier 'meta)
+
 ;; Don't be intelligent about how to split the window
 (setq split-height-threshold nil)
 
