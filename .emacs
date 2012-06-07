@@ -378,7 +378,7 @@
 (global-set-key "\C-ce" 'ensure-flymake)
 (global-set-key "\C-c\C-e" (lambda ()
                              (interactive)
-                             (shell-command (concat "run_pylint.sh " buffer-file-name " &"))))
+                             (shell-command (concat (buffer-runpylint-loc) " " buffer-file-name " &"))))
 
 ;; God these defaults are annoying
 (global-unset-key "\C-x\C-b")
