@@ -20,6 +20,7 @@
 ;; Set up my path, in emacs and out
 (setq load-path (append (list "~/.emacs.d") load-path))
 (setenv "PATH" (concat (expand-file-name "~/") "bin" ":" (getenv "PATH")))
+(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
 
 ;; Turn of the menu bars
 (menu-bar-mode 0)
