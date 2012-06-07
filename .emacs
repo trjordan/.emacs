@@ -3,7 +3,7 @@
 ;;;
 
 ;; Stupid desktop-save hack ... UTF-8 problem? Not really sure.
-(setq Î 206)
+(setq Î nil)
 
 (require 'desktop)
 (desktop-save-mode 1)
@@ -373,7 +373,7 @@
 (global-set-key "\C-t" 'transpose-chars)
 (global-set-key (kbd "<f12>") 'clean-copy)
 (global-set-key "\C-x\C-p" 'up-one-newline)
-(global-set-key "\M-`" 'other-frame)
+(global-set-key "\M-\`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 (global-set-key "\C-ce" 'ensure-flymake)
 (global-set-key "\C-c\C-e" (lambda ()
@@ -505,7 +505,8 @@
  '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(shell-file-name "/bin/bash")
- '(sort-fold-case t)
+ '(sort-fold-case t t)
+ '(tramp-default-method "scp")
  '(transient-mark-mode t)
  '(user-mail-address "terral.jordan@gmail.com")
  '(warning-suppress-types nil)
