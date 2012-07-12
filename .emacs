@@ -81,6 +81,7 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.less" . css-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
