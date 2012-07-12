@@ -41,6 +41,10 @@
 ;; Open the main projects dir
 (find-file "~/repos")
 
+;; Load my scratch buffer
+(require 'persistent-scratch)
+(load-persistent-scratch)
+
 ;; Spaces, not tabs!
 (setq c-basic-offset 4)
 (setq nxml-child-indent 4)
