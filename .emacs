@@ -149,9 +149,11 @@
     (rename-buffer (concat pkg "/" (buffer-name)))))
 
 (defun prepend-hook ()
-  (let ((filename (car (last (split-string (buffer-file-name) "/")))))
+  (let ((filename (car (last (split-string (buffer-file-name) "/"))))
+        (pkg (first (last (split-string (buffer-file-name) "/") 2))))
     (if (and (member filename '("__init__.py", "index.html"))
-             (not (string-match "/" (buffer-name))))
+             (not (string-match "/" (buffer-name)))
+             (get-buffer (concat pkg "/" (buffer-name))))
         (prepend-one-dir))))
 
 (add-hook 'find-file-hook 'prepend-hook)
