@@ -2016,13 +2016,13 @@ steps to set this manually."
     (list "php" (list "-f" local-file "-l"))))
 
 ;;;; javascript-specific init-cleanup routines
-(defun flymake-javascript-init ()
-  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-copy))
-         (local-file  (file-relative-name
-                       temp-file
-                       (file-name-directory buffer-file-name))))
-    (list "jshint" (list local-file))))
+;; (defun flymake-javascript-init ()
+;;   (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-copy))
+;;          (local-file  (file-relative-name
+;;                        temp-file
+;;                        (file-name-directory buffer-file-name))))
+;;     (list "jshint" (list local-file))))
 
 ;;;; css-specific init-cleanup routines
 (defun flymake-css-init ()
