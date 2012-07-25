@@ -16,3 +16,5 @@
       (with-current-buffer (get-buffer "*scratch*")
         (delete-region (point-min) (point-max))
         (shell-command (format "cat %s" persistent-scratch-filename) (current-buffer)))))
+
+(provide 'persistent-scratch)
