@@ -215,16 +215,20 @@
 
 (setq dev-ini-buffer-name "development.ini")
 
-(defun set-rope-buffer (name)
+(defun set-py-buffer (name func)
   (save-excursion
     (let ((buf (buffer-name)))
       (switch-to-buffer name t)
       (if (eq major-mode 'python-mode)
-          (ropemacs-mode t)))))
+          (func t)))))
 
 (defun set-rope-all ()
   (interactive)
-  (mapcar 'set-rope-buffer (buffer-list)))
+  (mapcar 'set-rope-buffer (buffer-list) rope-mode))
+
+(defun set-flymake-all ()
+  (interactive)
+  (mapcar 'set-rope-buffer (buffer-list) flymake-mode))
 
 
 ;; Some functions for easily changing the logging level in python ini files
