@@ -220,15 +220,15 @@
     (let ((buf (buffer-name)))
       (switch-to-buffer name t)
       (if (eq major-mode 'python-mode)
-          (func t)))))
+          (funcall func t)))))
 
 (defun set-rope-all ()
   (interactive)
-  (mapcar 'set-rope-buffer (buffer-list) rope-mode))
+  (mapcar (lambda (b) (set-py-buffer b 'ropemacs-mode)) (buffer-list)))
 
 (defun set-flymake-all ()
   (interactive)
-  (mapcar 'set-rope-buffer (buffer-list) flymake-mode))
+  (mapcar (lambda (b) (set-py-buffer b 'flymake-mode)) (buffer-list)))
 
 
 ;; Some functions for easily changing the logging level in python ini files
@@ -482,7 +482,7 @@
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
- '(grep-find-command "find . -wholename '*.min.js' -prune -o -type f -print0 | xargs -0 -e grep -nH -e ")
+ '(grep-find-command "grep -nH -e .")
  '(ibuffer-deletion-char 68)
  '(ibuffer-expert t)
  '(ibuffer-formats (quote ((mark " " (name 16 -1) " " filename))))
