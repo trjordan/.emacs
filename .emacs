@@ -465,10 +465,10 @@
 
 ;; End of file.
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
@@ -490,6 +490,7 @@
  '(ido-default-buffer-method (quote switch-to-buffer))
  '(ido-mode (quote both) nil (ido))
  '(indent-tabs-mode nil)
+ '(ispell-program-name "/usr/local/bin/ispell")
  '(js-auto-indent-flag nil)
  '(js-expr-indent-offset 0)
  '(kill-whole-line t)
@@ -523,10 +524,10 @@
  '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
