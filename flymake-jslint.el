@@ -17,7 +17,7 @@
 
 (setq flymake-err-line-patterns
       (cons '("^\\(.+\\)\. (\\(.+\\)\.lint:\\([[:digit:]]+\\):\\([[:digit:]]+\\)"
-              nil 3 1 2)
+              nil 3 2 1)
             flymake-err-line-patterns))
 
 (provide 'flymake-jslint)
