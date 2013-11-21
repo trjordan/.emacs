@@ -14,7 +14,7 @@
   (if (eq (desktop-owner) (emacs-pid))
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(remove-hook 'before-save-hook 'delete-trailing-whitespace)
 
 
 ;; Set up my path, in emacs and out
@@ -138,7 +138,7 @@
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
-(djcb-program-shortcut (kbd "<S-f5>") "prod" "ssh awsapp1")
+(djcb-program-shortcut (kbd "<S-f5>") "prod" "pshell")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
 (djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/tracelons/transformer/etl")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
@@ -166,8 +166,9 @@
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
 (require 'color-theme)
+(require 'colors)
 (color-theme-initialize)
-(color-theme-calm-forest)
+(color-theme-blue-mood)
 (setq ansi-term-color-vector
       [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
@@ -383,10 +384,12 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-t" 'transpose-chars)
 (global-set-key (kbd "<f12>") 'clean-copy)
+(global-set-key (kbd "<f9>") 'my-theme-cycle)
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-\`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
 (global-set-key "\C-ce" 'ensure-flymake)
+(global-set-key (kbd "<f9>") 'variable-pitch-mode)
 (global-set-key "\C-c\C-e" (lambda ()
                              (interactive)
                              (shell-command (concat (buffer-runpylint-loc) " " buffer-file-name " &"))))
