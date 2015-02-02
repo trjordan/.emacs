@@ -2,10 +2,8 @@
 ;;; TR's .emacs file
 ;;;
 
-;; Stupid desktop-save hack ... UTF-8 problem? Not really sure.
-(setq Î nil)
-
 (require 'desktop)
+(setq desktop-file-version (format "%s" desktop-file-version))
 (desktop-save-mode 1)
 (setq desktop-dirname "~/.emacs.d/")
 (defun my-desktop-save ()
