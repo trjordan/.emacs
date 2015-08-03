@@ -1,3 +1,4 @@
+elpa
 *.elc
 .emacs.desktop
 .emacs.desktop.lock
