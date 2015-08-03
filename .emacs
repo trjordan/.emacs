@@ -85,13 +85,14 @@
  'web-mode 'php-mode 'markdown-mode 'python-mode 'haskell-mode
  'less-css-mode 'thrift
  ;; Inline checking
- 'flymake 'flymake-jslint 'flymake-python-pyflakes
+ 'flymake 'flymake-jslint 'flymake-python-pyflakes 'pymacs
  ;; Git
  'ibuffer-git
  ;; Faces / colors
- 'faces+ 'menu-bar+ 'color-theme
+ 'faces+ 'menu-bar+ 'color-theme 'doremi 'doremi-frm 'doremi-cmd
+ 'frame-cmds 'frame-fns 'facemenu+
  ;; Other stuff
- 'yasnippet-bundle 'persistent-scratch 'hexrgb)
+ 'yasnippet-bundle 'persistent-scratch 'hexrgb 'auto-complete)
 
 ;; Load in any other modes I use frequently
 ;; (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
