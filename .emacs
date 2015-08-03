@@ -5,6 +5,9 @@
 ;; Stupid desktop-save hack ... UTF-8 problem? Not really sure.
 (setq Î nil)
 
+;;; Don't steal files
+(setq create-lockfiles nil)
+
 (require 'desktop)
 (desktop-save-mode 1)
 (setq desktop-dirname "~/.emacs.d/")
@@ -14,11 +17,10 @@
   (if (eq (desktop-owner) (emacs-pid))
       (desktop-save desktop-dirname)))
 (add-hook 'auto-save-hook 'my-desktop-save)
-(remove-hook 'before-save-hook 'delete-trailing-whitespace)
-
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Set up my path, in emacs and out
-(setq load-path (append (list "~/.emacs.d") load-path))
+(setq load-path (append (list "~/.emacs.d/lisp") load-path))
 (setenv "PATH" (concat (expand-file-name "~/") "bin" ":" (getenv "PATH")))
 (setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
 
@@ -42,19 +44,61 @@
 (find-file "~/repos")
 
 ;; Load my scratch buffer
-(require 'persistent-scratch)
-(load-persistent-scratch)
+;;(require 'persistent-scratch)
+;;(load-persistent-scratch)
 
 ;; Spaces, not tabs!
 (setq c-basic-offset 4)
 (setq nxml-child-indent 4)
 
+;; Let's do this with packages!
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+;; activate installed packages
+(package-initialize)
+
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
+   Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     ;; (package-installed-p 'evil)
+     (if (package-installed-p package)
+         nil
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+           (package-install package)
+         package)))
+   packages))
+
+;; make sure to have downloaded archive description.
+;; Or use package-archive-contents as suggested by Nicolas Dudebout
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+(ensure-package-installed
+ ;; Language modes
+ 'web-mode 'php-mode 'markdown-mode 'python-mode 'haskell-mode
+ 'less-css-mode 'thrift
+ ;; Inline checking
+ 'flymake 'flymake-jslint 'flymake-python-pyflakes
+ ;; Git
+ 'ibuffer-git
+ ;; Faces / colors
+ 'faces+ 'menu-bar+ 'color-theme
+ ;; Other stuff
+ 'yasnippet-bundle 'persistent-scratch 'hexrgb)
+
 ;; Load in any other modes I use frequently
-(autoload 'php-mode "php-mode" "Major mode for editing php code." t)
+;; (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
 ;(require 'ibuffer-git)
-(require 'less)
-(require 'markdown-mode)
+;(require 'less)
+;(require 'markdown-mode)
 (require 'flymake-jslint)
 (defun my-jslint-hook ()
   (if (and (< (buffer-size) (* 250 1024))
@@ -62,27 +106,27 @@
       (flymake-mode 1)))
 (add-hook 'js-mode-hook 'my-jslint-hook)
 (add-to-list 'load-path "~/.emacs.d/yasnippet")
-(require 'yasnippet-bundle)
-(yas/global-mode 1)
+;; (require 'yasnippet-bundle)
+;; (yas/global-mode 1)
 (require 'flymake-pylint)
 (add-hook 'python-mode flymake-mode)
-(require 'thrift-mode)
+;; (require 'thrift-mode)
 (setq flymake-max-parallel-syntax-checks 8)
 
-;; Add some places to the path
-(if (< emacs-major-version 23)
-    (add-to-list 'load-path "~/.emacs.d/nxml/"))
+;; Add some places to the path (probably not going to use < 23 going forward...)
+;; (if (< emacs-major-version 23)
+;;    (add-to-list 'load-path "~/.emacs.d/nxml/"))
 
-(load "flymake-cursor.el")
-(load "~/.emacs.d/nxhtml/autostart.el")
+;; (load "flymake-cursor.el")
+;; (load "~/.emacs.d/nxhtml/autostart.el")
 (load "camelcase.el")
-(require 'ourcomments-widgets)
+;;(require 'ourcomments-widgets)
 
 ;; Change some file associations
-(add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.less" . css-mode))
@@ -97,7 +141,7 @@
 (load "kbd-macros.el")
 
 ; Really, compatability mode? Apparently this isn't here until Emacs 24
-(unless (fboundp 'prog-mode) (defalias 'prog-mode 'fundamental-mode))
+;; (unless (fboundp 'prog-mode) (defalias 'prog-mode 'fundamental-mode))
 
 (defun my-offsets ()
   (c-set-offset 'arglist-intro '+)
@@ -134,11 +178,11 @@
    (get-buffer-process (current-buffer))
    (if string string (current-kill 0))))
 
-(djcb-program-shortcut (kbd "<S-f8>") "shell" "tl")
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/appneta.com")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
-(djcb-program-shortcut (kbd "<S-f5>") "prod" "pshell")
+(djcb-program-shortcut (kbd "<S-f5>") "prod" "ssh awsapp1")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
 (djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/tracelons/transformer/etl")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
@@ -146,38 +190,49 @@
 (global-set-key "\C-cy" 'my-term-paste)
 
 ;; Couple functions that rename common buffers to better names for me
-(defun prepend-one-dir ()
-  "Renames a buffer with the parent folder name"
-  (interactive)
-  (let ((pkg (first (last (split-string (buffer-file-name) "/") 2))))
-    (rename-buffer (concat pkg "/" (buffer-name)))))
+;; (defun prepend-one-dir ()
+;;   "Renames a buffer with the parent folder name"
+;;   (interactive)
+;;   (let ((pkg (first (last (split-string (buffer-file-name) "/") 2))))
+;;     (rename-buffer (concat pkg "/" (buffer-name)))))
 
-(defun prepend-hook ()
-  (let ((filename (car (last (split-string (buffer-file-name) "/"))))
-        (pkg (first (last (split-string (buffer-file-name) "/") 2))))
-    (if (and (member filename '("__init__.py", "index.html"))
-             (not (string-match "/" (buffer-name)))
-             (get-buffer (concat pkg "/" (buffer-name))))
-        (prepend-one-dir))))
+;; (defun prepend-hook ()
+;;   (let ((filename (car (last (split-string (buffer-file-name) "/"))))
+;;         (pkg (first (last (split-string (buffer-file-name) "/") 2))))
+;;     (if (and (member filename '("__init__.py", "index.html"))
+;;              (not (string-match "/" (buffer-name)))
+;;              (get-buffer (concat pkg "/" (buffer-name))))
+;;         (prepend-one-dir))))
 
-(add-hook 'find-file-hook 'prepend-hook)
+;; (add-hook 'find-file-hook 'prepend-hook)
+(require 'uniquify)
 
 ;; Fix the color in terminals, and load my color theme
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
 (require 'color-theme)
-(require 'colors)
 (color-theme-initialize)
+(load "colors.el")
 (color-theme-blue-mood)
-(setq ansi-term-color-vector
-      [unspecified "#000000" "#963F3C" "#5FFB65" "#FFFD65"
-                   "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
+(setq ansi-term-color-vector  [term
+   term-color-black
+   term-color-red
+   term-color-green
+   term-color-yellow
+   term-color-blue
+   term-color-magenta
+   term-color-cyan
+   term-color-white])
+;; (setq ansi-term-color-vector
+;;       [default "#000000" "#963F3C" "#5FFB65" "#FFFD65"
+;;                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
+;;  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
 
 ;; Haskell mode
-(load "~/.emacs.d/haskell-mode/haskell-site-file")
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;; (load "~/.emacs.d/haskell-mode/haskell-site-file")
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 
@@ -466,6 +521,21 @@
 (global-set-key (kbd "<C-f11>") 'setf11)
 (global-set-key (kbd "<C-f12>") 'setf12)
 
+;; (when (and (equal emacs-major-version 24)
+;;            (equal emacs-minor-version 3))
+;;   (eval-after-load "mumamo"
+;;     '(setq mumamo-per-buffer-local-vars
+;;            (delq 'buffer-file-name mumamo-per-buffer-local-vars)))
+;;   (eval-after-load "bytecomp"
+;;     '(add-to-list 'byte-compile-not-obsolete-vars
+;;                   'font-lock-beginning-of-syntax-function))
+;;   ;; tramp-compat.el clobbers this variable!
+;;   (eval-after-load "tramp-compat"
+;;     '(add-to-list 'byte-compile-not-obsolete-vars
+;;                   'font-lock-beginning-of-syntax-function)))
+
+(server-start)
+
 ;; End of file.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -473,14 +543,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
- '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
+ '(ansi-color-names-vector
+   ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
  '(dvc-tips-enabled nil)
- '(exec-path (quote ("~/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
+ '(exec-path
+   (quote
+    ("~/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(fill-column 80)
  '(flymake-gui-warnings-enabled nil)
  '(gdb-use-separate-io-buffer t)
@@ -498,7 +571,9 @@
  '(js-expr-indent-offset 0)
  '(kill-whole-line t)
  '(matlab-indent-level 4)
- '(matlab-keyword-list (quote ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
+ '(matlab-keyword-list
+   (quote
+    ("global" "persistent" "for" "while" "if" "elseif" "else" "endfunction" "return" "break" "continue" "switch" "case" "otherwise" "try" "catch" "tic" "toc" "Warning" "classdef" "properties" "methods")))
  '(matlab-mode-install-path (quote ("/usr/matlab/bin/toolbox/")))
  '(matlab-shell-command "/usr/matlab/bin/matlab")
  '(matlab-shell-command-switches (quote ("-nodesktop" "-nosplash")))
@@ -506,23 +581,38 @@
  '(matlab-shell-input-ring-size 128)
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
- '(mumamo-major-modes (quote ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode) (asp-vb-mode visual-basic-mode) (javascript-mode js-mode javascript-mode espresso-mode ecmascript-mode) (java-mode jde-mode java-mode) (groovy-mode groovy-mode) (nxhtml-mode nxhtml-mode html-mode))))
+ '(mumamo-major-modes
+   (quote
+    ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode)
+     (asp-vb-mode visual-basic-mode)
+     (javascript-mode js-mode javascript-mode espresso-mode ecmascript-mode)
+     (java-mode jde-mode java-mode)
+     (groovy-mode groovy-mode)
+     (nxhtml-mode nxhtml-mode html-mode))))
  '(org-hide-leading-stars t)
  '(org-level-color-stars-only t)
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-honour-comment-indentation nil)
+ '(python-indent-guess-indent-offset t)
  '(python-python-command "ipython")
+ '(python-skeleton-autoinsert nil)
  '(python-use-skeletons nil)
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
  '(ropemacs-enable-shortcuts nil)
- '(safe-local-variable-values (quote ((eval add-hook (quote write-file-hooks) (quote time-stamp)) (c-hanging-comment-ender-p))))
+ '(safe-local-variable-values
+   (quote
+    ((eval add-hook
+           (quote write-file-hooks)
+           (quote time-stamp))
+     (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(shell-file-name "/bin/bash")
  '(sort-fold-case t t)
  '(tramp-default-method "scp")
  '(transient-mark-mode t)
+ '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(user-mail-address "terral.jordan@gmail.com")
  '(warning-suppress-types nil)
  '(x-select-enable-clipboard t))
@@ -533,12 +623,11 @@
  ;; If there is more than one, they won't work right.
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
- '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil))))
+ '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil)))
+ '(term-color-blue ((t (:background "light steel blue" :foreground "light steel blue"))) t))
 
 
 (put 'upcase-region 'disabled nil)
-
 (put 'scroll-left 'disabled nil)
-
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
