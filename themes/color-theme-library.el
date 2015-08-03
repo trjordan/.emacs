@@ -9450,7 +9450,18 @@ Includes cperl, custom, font-lock, p4, speedbar, widget."
      (widget-inactive-face ((t (:foreground "dim gray"))))
      (widget-single-line-field-face ((t (:background "gray85"))))
      (yellow ((t (:foreground "yellow"))))
-     (zmacs-region ((t (:background "white" :foreground "midnightblue")))))))
+     (zmacs-region ((t (:background "white" :foreground "midnightblue"))))
+     (term-color-black ((t (:background "#000000", :foreground "#000000"))))
+     (term-color-red ((t (:background "#000000", :foreground "#963F3C"))))
+     (term-color-green ((t (:background "#000000", :foreground "#5FFB65"))))
+     (term-color-yellow ((t (:background "#000000", :foreground "#FFFD65"))))
+     (term-color-blue ((t (:background "#000000", :foreground "#FFFFFF")))) ;; "#0082FF"
+     (term-color-magenta ((t (:background "#000000", :foreground "#FF2180"))))
+     (term-color-cyan ((t (:background "#000000", :foreground "#57DCDB"))))
+     (term-color-white ((t (:background "#000000", :foreground "#FFFFFF"))))
+     (term-default-fg-color ((t (:inherit term-color-white))))
+     (term-default-bg-color ((t (:inherit term-color-black))))
+)))
 
 (defun color-theme-euphoria ()
   "Color theme by oGLOWo, created 2000-04-19.
