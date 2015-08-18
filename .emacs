@@ -81,7 +81,7 @@
 (ensure-package-installed
  ;; Language modes
  'web-mode 'php-mode 'markdown-mode 'python-mode 'haskell-mode
- 'less-css-mode 'thrift
+ 'less-css-mode 'thrift 'yaml-mode 'sass-mode
  ;; Inline checking
  'flymake 'flymake-jslint 'flymake-python-pyflakes 'pymacs
  ;; Git
@@ -116,6 +116,7 @@
 ;; (if (< emacs-major-version 23)
 ;;    (add-to-list 'load-path "~/.emacs.d/nxml/"))
 
+(require 'flymake-cursor)
 ;; (load "flymake-cursor.el")
 ;; (load "~/.emacs.d/nxhtml/autostart.el")
 (load "camelcase.el")
@@ -177,7 +178,7 @@
    (get-buffer-process (current-buffer))
    (if string string (current-kill 0))))
 
-(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/appneta.com")
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/scortex")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
 (djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
@@ -608,12 +609,15 @@
      (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
  '(shell-file-name "/bin/bash")
- '(sort-fold-case t t)
+ '(sort-fold-case t)
  '(tramp-default-method "scp")
  '(transient-mark-mode t)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(user-mail-address "terral.jordan@gmail.com")
  '(warning-suppress-types nil)
+ '(web-mode-attr-indent-offset 2)
+ '(web-mode-code-indent-offset 4)
+ '(web-mode-markup-indent-offset 2)
  '(x-select-enable-clipboard t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -623,7 +627,7 @@
  '(mumamo-background-chunk-major ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode1 ((((class color) (min-colors 8)) nil)))
  '(mumamo-background-chunk-submode2 ((((class color) (min-colors 8)) nil)))
- '(term-color-blue ((t (:background "light steel blue" :foreground "light steel blue"))) t))
+ '(term-color-blue ((t (:background "light steel blue" :foreground "light steel blue")))))
 
 
 (put 'upcase-region 'disabled nil)
