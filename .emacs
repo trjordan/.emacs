@@ -21,7 +21,9 @@
 (setq load-path (append (list "~/.emacs.d/lisp") load-path))
 (setenv "PATH" (concat (expand-file-name "~/") "bin" ":" (getenv "PATH")))
 (setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
 
+(setq exec-path (append exec-path '("/usr/local/bin")))
 ;; Turn of the menu bars
 (menu-bar-mode 0)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
@@ -81,36 +83,34 @@
 (ensure-package-installed
  ;; Language modes
  'web-mode 'php-mode 'markdown-mode 'python-mode 'haskell-mode
- 'less-css-mode 'thrift 'yaml-mode 'sass-mode
+ 'less-css-mode 'thrift 'yaml-mode 'sass-mode 'scss-mode
+ 'jinja2-mode 'json-mode 'web-mode
  ;; Inline checking
- 'flymake 'flymake-jslint 'flymake-python-pyflakes 'pymacs
+ 'pymacs 'flycheck
  ;; Git
  'ibuffer-git
  ;; Faces / colors
  'faces+ 'menu-bar+ 'color-theme 'doremi 'doremi-frm 'doremi-cmd
  'frame-cmds 'frame-fns 'facemenu+
  ;; Other stuff
- 'yasnippet-bundle 'persistent-scratch 'hexrgb 'auto-complete)
+ 'yasnippet-bundle 'persistent-scratch 'hexrgb 'auto-complete
+ 'exec-path-from-shell)
 
 ;; Load in any other modes I use frequently
-;; (autoload 'php-mode "php-mode" "Major mode for editing php code." t)
 (load "dired-x")
-;(require 'ibuffer-git)
-;(require 'less)
-;(require 'markdown-mode)
-(require 'flymake-jslint)
-(defun my-jslint-hook ()
-  (if (and (< (buffer-size) (* 250 1024))
-           buffer-file-name)
-      (flymake-mode 1)))
-(add-hook 'js-mode-hook 'my-jslint-hook)
 (add-to-list 'load-path "~/.emacs.d/yasnippet")
-;; (require 'yasnippet-bundle)
-;; (yas/global-mode 1)
-(require 'flymake-pylint)
-(add-hook 'python-mode flymake-mode)
-;; (require 'thrift-mode)
-(setq flymake-max-parallel-syntax-checks 8)
+
+;; Set up flycheck for frontend syntax checking
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;; Add some places to the path (probably not going to use < 23 going forward...)
 ;; (if (< emacs-major-version 23)
@@ -126,10 +126,12 @@
 ;; (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
-;; (add-to-list 'auto-mode-alist '("\\.html\\'" . django-nxhtml-mumamo-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.less" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.scss" . scss-mode))
 
 ;; Enable backup files to a specific hidden directory, keeping the
 ;; default number of versions
@@ -178,13 +180,13 @@
    (get-buffer-process (current-buffer))
    (if string string (current-kill 0))))
 
-(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/scortex")
-(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "tl && paster shell development.ini")
-(djcb-program-shortcut (kbd "<S-f3>") "paster-serve" "tl && paster serve development.ini --reload ")
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/10stories && . .venv/bin/activate")
+(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/repos/10stories.github.io && jekyll serve")
+(djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/repos/10stories && . .venv/bin/activate && ./run runserver")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
-(djcb-program-shortcut (kbd "<S-f5>") "prod" "ssh awsapp1")
+(djcb-program-shortcut (kbd "<S-f5>") "prod" "psql -dusers")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
-(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/tracelons/transformer/etl")
+(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/10stories && . .venv/bin/activate ")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
 (global-set-key "\C-cy" 'my-term-paste)
@@ -236,6 +238,9 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 
+;; stdout is bound to ASCII encoding in python 3 by default
+;; Idiots.
+(setenv "LC_CTYPE" "UTF-8")
 
 ;; Set me up a python IDE!
 ;;
@@ -286,6 +291,13 @@
   (interactive)
   (mapcar (lambda (b) (set-py-buffer b 'flymake-mode)) (buffer-list)))
 
+
+(defun insert-trace ()
+  (interactive)
+  (insert "import pdb; pdb.set_trace()\n"))
+
+(eval-after-load 'python
+  '(define-key python-mode-map "\C-c b" 'insert-trace))
 
 ;; Some functions for easily changing the logging level in python ini files
 (defun change-logging-inter ()
@@ -425,8 +437,12 @@
 (global-set-key "\C-cf" 'vc-git-grep)
 (global-set-key "\C-cq" 'query-replace-regexp)
 (global-set-key "\C-ci" 'indent-region)
-(global-set-key "\C-cn" 'flymake-goto-next-error)
-(global-set-key "\C-cp" 'flymake-goto-prev-error)
+(global-set-key "\C-cn" (lambda () (interactive)
+                          (and (boundp 'flymake-mode) (flymake-goto-next-error))
+                          (and (boundp 'flycheck-mode) (flycheck-next-error))))
+(global-set-key "\C-cp" (lambda () (interactive)
+                          (and (boundp 'flymake-mode) (flymake-goto-prev-error))
+                          (and (boundp 'flycheck-mode) (flycheck-previous-error))))
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-ct" 'global-auto-complete-mode)
@@ -445,8 +461,7 @@
 (global-set-key "\M-n" 'make-frame-command)
 (global-set-key "\C-ce" 'ensure-flymake)
 (global-set-key (kbd "<f9>") 'variable-pitch-mode)
-(global-set-key "\C-c\C-e" (lambda ()
-                             (interactive)
+(global-set-key "\C-c\C-e" (lambda () (interactive)
                              (shell-command (concat (buffer-runpylint-loc) " " buffer-file-name " &"))))
 
 ;; God these defaults are annoying
@@ -555,7 +570,11 @@
    (quote
     ("~/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(fill-column 80)
+ '(flycheck-disabled-checkers (quote (javascript-jshint)))
+ '(flycheck-javascript-eslint-executable "/Users/tjordan/repos/10stories/run_eslint.sh")
+ '(flycheck-python-pylint-executable "~/repos/10stories/run_pylint.sh")
  '(flymake-gui-warnings-enabled nil)
+ '(flymake-log-level -1)
  '(gdb-use-separate-io-buffer t)
  '(global-auto-revert-mode t)
  '(grep-find-command "grep -nH -e .")
