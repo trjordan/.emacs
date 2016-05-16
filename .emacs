@@ -116,8 +116,6 @@
 ;; (if (< emacs-major-version 23)
 ;;    (add-to-list 'load-path "~/.emacs.d/nxml/"))
 
-(require 'flymake-cursor)
-;; (load "flymake-cursor.el")
 ;; (load "~/.emacs.d/nxhtml/autostart.el")
 (load "camelcase.el")
 ;;(require 'ourcomments-widgets)
@@ -183,10 +181,10 @@
 (djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/10stories && . .venv/bin/activate")
 (djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/repos/10stories.github.io && jekyll serve")
 (djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/repos/10stories && . .venv/bin/activate && ./run runserver")
-(djcb-program-shortcut (kbd "<S-f4>") "mysql" "mysql -A")
+(djcb-program-shortcut (kbd "<S-f4>") "mysql" "ssh etl")
 (djcb-program-shortcut (kbd "<S-f5>") "prod" "psql -dusers")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
-(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/10stories && . .venv/bin/activate ")
+(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/10stories && . .venv/bin/activate")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
 (global-set-key "\C-cy" 'my-term-paste)
@@ -287,11 +285,6 @@
   (interactive)
   (mapcar (lambda (b) (set-py-buffer b 'ropemacs-mode)) (buffer-list)))
 
-(defun set-flymake-all ()
-  (interactive)
-  (mapcar (lambda (b) (set-py-buffer b 'flymake-mode)) (buffer-list)))
-
-
 (defun insert-trace ()
   (interactive)
   (insert "import pdb; pdb.set_trace()\n"))
@@ -355,11 +348,6 @@
     (previous-line)
     (move-end-of-line 1)
     (kill-region (point) (mark))))
-
-(defun ensure-flymake ()
-  (interactive)
-  (flymake-mode t)
-  (flymake-start-syntax-check))
 
 ;; Direct access to certain buffers
 (defun goto-buffer-func (key)
@@ -437,12 +425,8 @@
 (global-set-key "\C-cf" 'vc-git-grep)
 (global-set-key "\C-cq" 'query-replace-regexp)
 (global-set-key "\C-ci" 'indent-region)
-(global-set-key "\C-cn" (lambda () (interactive)
-                          (and (boundp 'flymake-mode) (flymake-goto-next-error))
-                          (and (boundp 'flycheck-mode) (flycheck-next-error))))
-(global-set-key "\C-cp" (lambda () (interactive)
-                          (and (boundp 'flymake-mode) (flymake-goto-prev-error))
-                          (and (boundp 'flycheck-mode) (flycheck-previous-error))))
+(global-set-key "\C-cn" 'flycheck-next-error)
+(global-set-key "\C-cp" 'flycheck-previous-error)
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key "\C-ct" 'global-auto-complete-mode)
@@ -459,7 +443,7 @@
 (global-set-key "\C-x\C-p" 'up-one-newline)
 (global-set-key "\M-\`" 'other-frame)
 (global-set-key "\M-n" 'make-frame-command)
-(global-set-key "\C-ce" 'ensure-flymake)
+(global-set-key "\C-ce" 'flycheck-compile)
 (global-set-key (kbd "<f9>") 'variable-pitch-mode)
 (global-set-key "\C-c\C-e" (lambda () (interactive)
                              (shell-command (concat (buffer-runpylint-loc) " " buffer-file-name " &"))))
@@ -634,9 +618,9 @@
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(user-mail-address "terral.jordan@gmail.com")
  '(warning-suppress-types nil)
- '(web-mode-attr-indent-offset 2)
+ '(web-mode-attr-indent-offset 4)
  '(web-mode-code-indent-offset 4)
- '(web-mode-markup-indent-offset 2)
+ '(web-mode-markup-indent-offset 4)
  '(x-select-enable-clipboard t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
