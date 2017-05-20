@@ -28,18 +28,6 @@
 (menu-bar-mode 0)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
-;; The good reference on specifying fonts:
-;; http://www.gnu.org/software/libtool/manual/emacs/Fonts.html
-;;
-;; This appears to work, too.
-;; (set-default-font "Menlo-12:weight=demibold")
-(setq apple-font "-apple-Menlo-medium-normal-normal-*-10.5-*-*-*-m-0-fontset-auto1")
-(setq linux-font "Bitstream Vera Sans Mono-9")
-(if (member "Menlo" (font-family-list))
-    (setq preferred-font apple-font)
-    (setq preferred-font linux-font))
-(set-default-font preferred-font)
-
 ;; Open the main projects dir
 (find-file "~/repos")
 
@@ -84,7 +72,7 @@
  ;; Language modes
  'web-mode 'php-mode 'markdown-mode 'python-mode 'haskell-mode
  'less-css-mode 'thrift 'yaml-mode 'sass-mode 'scss-mode
- 'jinja2-mode 'json-mode 'web-mode
+ 'jinja2-mode 'json-mode
  ;; Inline checking
  'pymacs 'flycheck
  ;; Git
@@ -126,6 +114,8 @@
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.template" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.less" . css-mode))
@@ -178,13 +168,13 @@
    (get-buffer-process (current-buffer))
    (if string string (current-kill 0))))
 
-(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/10stories && . .venv/bin/activate")
-(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/repos/10stories.github.io && jekyll serve")
-(djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/repos/10stories && . .venv/bin/activate && ./run runserver")
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/funnelmetrics && . .venv/bin/activate")
+(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/repos/funnelmetrics.github.io && jekyll serve")
+(djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/repos/trackmaven-spa && docker-compose run --service-ports builder gulp --env=doghouse")
 (djcb-program-shortcut (kbd "<S-f4>") "mysql" "ssh etl")
-(djcb-program-shortcut (kbd "<S-f5>") "prod" "psql -dusers")
+(djcb-program-shortcut (kbd "<S-f5>") "local" "psql")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
-(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/10stories && . .venv/bin/activate")
+(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/funnelmetrics && . .venv/bin/activate")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
 (djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
 (global-set-key "\C-cy" 'my-term-paste)
@@ -236,8 +226,7 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 
-;; stdout is bound to ASCII encoding in python 3 by default
-;; Idiots.
+;; stdout is bound to ASCII encoding in python 3 by default; Idiots.
 (setenv "LC_CTYPE" "UTF-8")
 
 ;; Set me up a python IDE!
@@ -546,6 +535,7 @@
    ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
+ '(coffee-tab-width 4)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -555,8 +545,8 @@
     ("~/bin" "/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/bin")))
  '(fill-column 80)
  '(flycheck-disabled-checkers (quote (javascript-jshint)))
- '(flycheck-javascript-eslint-executable "/Users/tjordan/repos/10stories/run_eslint.sh")
- '(flycheck-python-pylint-executable "~/repos/10stories/run_pylint.sh")
+ '(flycheck-javascript-eslint-executable "")
+ '(flycheck-python-pylint-executable "~/repos/funnelmetrics/run_pylint.sh")
  '(flymake-gui-warnings-enabled nil)
  '(flymake-log-level -1)
  '(gdb-use-separate-io-buffer t)
@@ -572,6 +562,8 @@
  '(ispell-program-name "/usr/local/bin/ispell")
  '(js-auto-indent-flag nil)
  '(js-expr-indent-offset 0)
+ '(js-indent-level 2)
+ '(json-reformat:indent-width 2)
  '(kill-whole-line t)
  '(matlab-indent-level 4)
  '(matlab-keyword-list
@@ -594,6 +586,9 @@
      (nxhtml-mode nxhtml-mode html-mode))))
  '(org-hide-leading-stars t)
  '(org-level-color-stars-only t)
+ '(package-selected-packages
+   (quote
+    (js2-mode web-mode-edit-element yasnippet-bundle yaml-mode web-mode thrift scss-mode sass-mode python-mode pymacs php-mode persistent-scratch menu-bar+ markdown-mode less-css-mode json-mode jinja2-mode ibuffer-git haskell-mode frame-cmds flycheck facemenu+ exec-path-from-shell doremi-frm doremi-cmd dockerfile-mode color-theme coffee-mode auto-complete)))
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-honour-comment-indentation nil)
@@ -611,17 +606,18 @@
            (quote time-stamp))
      (c-hanging-comment-ender-p))))
  '(scroll-bar-mode nil)
+ '(select-enable-clipboard t)
  '(shell-file-name "/bin/bash")
- '(sort-fold-case t)
+ '(sort-fold-case t t)
  '(tramp-default-method "scp")
  '(transient-mark-mode t)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(user-mail-address "terral.jordan@gmail.com")
  '(warning-suppress-types nil)
- '(web-mode-attr-indent-offset 4)
+ '(web-mode-attr-indent-offset 2)
+ '(web-mode-attr-value-indent-offset 2)
  '(web-mode-code-indent-offset 4)
- '(web-mode-markup-indent-offset 4)
- '(x-select-enable-clipboard t))
+ '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
