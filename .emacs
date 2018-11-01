@@ -3,6 +3,8 @@
 ;;;
 
 ;;; Don't steal files
+
+;;; Code:
 (setq create-lockfiles nil)
 
 (require 'desktop)
@@ -28,16 +30,13 @@
 (menu-bar-mode 0)
 (if (boundp 'tool-bar-mode) (tool-bar-mode 0))
 
-;; Open the main projects dir
-(find-file "~/repos")
-
 ;; Load my scratch buffer
 ;;(require 'persistent-scratch)
 ;;(load-persistent-scratch)
 
 ;; Spaces, not tabs!
-(setq c-basic-offset 4)
-(setq nxml-child-indent 4)
+(setq c-basic-offset 2)
+(setq nxml-child-indent 2)
 
 ;; Let's do this with packages!
 (require 'package)
@@ -58,7 +57,7 @@
      ;; (package-installed-p 'evil)
      (if (package-installed-p package)
          nil
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+       (if (y-or-n-p (format "Package %s is missing.  Install it? " package))
            (package-install package)
          package)))
    packages))
@@ -113,8 +112,8 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.template" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.text" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
@@ -168,15 +167,15 @@
    (get-buffer-process (current-buffer))
    (if string string (current-kill 0))))
 
-(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/repos/funnelmetrics && . .venv/bin/activate")
-(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/repos/funnelmetrics.github.io && jekyll serve")
-(djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/repos/trackmaven-spa && docker-compose run --service-ports builder gulp --env=doghouse")
-(djcb-program-shortcut (kbd "<S-f4>") "mysql" "ssh etl")
+(djcb-program-shortcut (kbd "<S-f8>") "shell" "cd ~/")
+(djcb-program-shortcut (kbd "<S-f2>") "paster-shell" "cd ~/")
+(djcb-program-shortcut (kbd "<S-f3>") "flask-serve" "cd ~/")
+(djcb-program-shortcut (kbd "<S-f4>") "mysql" "cd ~/")
 (djcb-program-shortcut (kbd "<S-f5>") "local" "psql")
 (djcb-program-shortcut (kbd "<S-f6>") "log" "cd ~/log")
-(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/repos/funnelmetrics && . .venv/bin/activate")
-(djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/repos/tracelons/transformer/etl && runetl -B")
-(djcb-program-shortcut (kbd "\C-cs") "shell" "tl")
+(djcb-program-shortcut (kbd "<S-f7>") "shell2" "cd ~/")
+(djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/")
+(djcb-program-shortcut (kbd "\C-cs") "shell" "cd ~/")
 (global-set-key "\C-cy" 'my-term-paste)
 
 ;; Couple functions that rename common buffers to better names for me
@@ -362,37 +361,6 @@
 (set-goto-buffer-func [?\C-&] [?\C-7])
 (set-goto-buffer-func [?\C-*] [?\C-8])
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Provide a way to run nose directly
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Root directory of tracelons repo
-(setq tracelons-dir "~/repos/tracelons/")
-;; Value for CELERY_CONFIG_MODULE
-(setq tracelons-etl-config "etl.config")
-;; Development.ini -- can be relative to tracelons/tracelytics
-(setq tracelons-ini "development.ini")
-
-(defun tracelons-web-nose-cmd ()
-  (concat "/venv/bin/nosetests --with-pylons=" tracelons-ini))
-(defun tracelons-etl-nose-cmd ()
-  (concat "CELERY_CONFIG_MODULE=" tracelons-etl-config " /venv/bin/nosetests"))
-
-(defun run-nose (root test-cmd)
-  "Root is relative to tracelons-dir, test-cmd is a nosetests cmd run in that directory."
-  (save-buffer)
-  (shell-command (concat "cd " tracelons-dir root " && " test-cmd " "
-                         (expand-file-name buffer-file-name)
-                         " &")))
-
-(defun run-etl-test ()
-  (interactive)
-  (run-nose "transformer" (tracelons-etl-nose-cmd)))
-
-(defun run-web-test ()
-  (interactive)
-  (run-nose "tracelytics" (tracelons-web-nose-cmd)))
-
 ;; Insert the current filename with f3
 (define-key minibuffer-local-map
   "\C-n" (lambda () (interactive)
@@ -536,6 +504,7 @@
  '(browse-url-browser-function (quote browse-url-default-windows-browser))
  '(case-fold-search t)
  '(coffee-tab-width 4)
+ '(css-indent-offset 2)
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -546,7 +515,6 @@
  '(fill-column 80)
  '(flycheck-disabled-checkers (quote (javascript-jshint)))
  '(flycheck-javascript-eslint-executable "")
- '(flycheck-python-pylint-executable "~/repos/funnelmetrics/run_pylint.sh")
  '(flymake-gui-warnings-enabled nil)
  '(flymake-log-level -1)
  '(gdb-use-separate-io-buffer t)
@@ -564,6 +532,7 @@
  '(js-expr-indent-offset 0)
  '(js-indent-level 2)
  '(json-reformat:indent-width 2)
+ '(jsx-indent-level 2)
  '(kill-whole-line t)
  '(matlab-indent-level 4)
  '(matlab-keyword-list
@@ -576,6 +545,7 @@
  '(matlab-shell-input-ring-size 128)
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
+ '(mode-require-final-newline true)
  '(mumamo-major-modes
    (quote
     ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode)
@@ -588,7 +558,7 @@
  '(org-level-color-stars-only t)
  '(package-selected-packages
    (quote
-    (js2-mode web-mode-edit-element yasnippet-bundle yaml-mode web-mode thrift scss-mode sass-mode python-mode pymacs php-mode persistent-scratch menu-bar+ markdown-mode less-css-mode json-mode jinja2-mode ibuffer-git haskell-mode frame-cmds flycheck facemenu+ exec-path-from-shell doremi-frm doremi-cmd dockerfile-mode color-theme coffee-mode auto-complete)))
+    (docker rjsx-mode jsx-mode js2-mode web-mode-edit-element yasnippet-bundle yaml-mode web-mode thrift scss-mode sass-mode python-mode pymacs php-mode persistent-scratch menu-bar+ markdown-mode less-css-mode json-mode jinja2-mode ibuffer-git haskell-mode frame-cmds flycheck facemenu+ exec-path-from-shell doremi-frm doremi-cmd dockerfile-mode color-theme coffee-mode auto-complete)))
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-honour-comment-indentation nil)
@@ -596,6 +566,7 @@
  '(python-python-command "ipython")
  '(python-skeleton-autoinsert nil)
  '(python-use-skeletons nil)
+ '(require-final-newline true)
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
  '(ropemacs-enable-shortcuts nil)
@@ -617,6 +588,7 @@
  '(web-mode-attr-indent-offset 2)
  '(web-mode-attr-value-indent-offset 2)
  '(web-mode-code-indent-offset 4)
+ '(web-mode-enable-auto-opening nil)
  '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
