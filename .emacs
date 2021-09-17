@@ -76,9 +76,6 @@
  'pymacs 'flycheck
  ;; Git
  'ibuffer-git
- ;; Faces / colors
- 'faces+ 'menu-bar+ 'color-theme 'doremi 'doremi-frm 'doremi-cmd
- 'frame-cmds 'frame-fns 'facemenu+
  ;; Other stuff
  'yasnippet-bundle 'persistent-scratch 'hexrgb 'auto-complete
  'exec-path-from-shell)
@@ -199,23 +196,21 @@
 ;; Fix the color in terminals, and load my color theme
 (setq term-default-bg-color nil)
 (setq term-default-fg-color "#FFFFFF")
-(require 'color-theme)
-(color-theme-initialize)
-(load "colors.el")
-(color-theme-blue-mood)
+(load "blue-mood-theme.el")
+(load-theme 'blue-mood t)
 (setq ansi-term-color-vector  [term
-   term-color-black
-   term-color-red
-   term-color-green
-   term-color-yellow
-   term-color-blue
-   term-color-magenta
-   term-color-cyan
-   term-color-white])
-;; (setq ansi-term-color-vector
-;;       [default "#000000" "#963F3C" "#5FFB65" "#FFFD65"
-;;                    "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
-;;  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
+                               term-color-black
+                               term-color-red
+                               term-color-green
+                               term-color-yellow
+                               term-color-blue
+                               term-color-magenta
+                               term-color-cyan
+                               term-color-white])
+(setq ansi-term-color-vector
+      [default "#000000" "#963F3C" "#5FFB65" "#FFFD65"
+                   "#0082FF" "#FF2180" "#57DCDB" "#FFFFFF"])
+ '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "cyan" "white"])
 
 ;; Haskell mode
 ;; (load "~/.emacs.d/haskell-mode/haskell-site-file")
@@ -505,6 +500,9 @@
  '(case-fold-search t)
  '(coffee-tab-width 4)
  '(css-indent-offset 2)
+ '(custom-safe-themes
+   (quote
+    ("db510eb70cf96e3dbd48f5d24de12b03db30674ea0853f06074d4ccf7403d7d3" default)))
  '(dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|\\(^\\..*\\)")
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
@@ -545,7 +543,6 @@
  '(matlab-shell-input-ring-size 128)
  '(matlab-shell-logo "/usr/share/emacs/22.1/etc/matlab.xpm")
  '(matlab-shell-mode-hook nil)
- '(mode-require-final-newline true)
  '(mumamo-major-modes
    (quote
     ((asp-js-mode js-mode javascript-mode espresso-mode ecmascript-mode)
@@ -558,7 +555,7 @@
  '(org-level-color-stars-only t)
  '(package-selected-packages
    (quote
-    (docker rjsx-mode jsx-mode js2-mode web-mode-edit-element yasnippet-bundle yaml-mode web-mode thrift scss-mode sass-mode python-mode pymacs php-mode persistent-scratch menu-bar+ markdown-mode less-css-mode json-mode jinja2-mode ibuffer-git haskell-mode frame-cmds flycheck facemenu+ exec-path-from-shell doremi-frm doremi-cmd dockerfile-mode color-theme coffee-mode auto-complete)))
+    (visual-fill typescript groovy-mode docker rjsx-mode jsx-mode js2-mode web-mode-edit-element yasnippet-bundle yaml-mode web-mode thrift scss-mode sass-mode python-mode pymacs php-mode persistent-scratch menu-bar+ markdown-mode less-css-mode json-mode jinja2-mode ibuffer-git haskell-mode frame-cmds flycheck facemenu+ exec-path-from-shell doremi-frm doremi-cmd dockerfile-mode color-theme coffee-mode auto-complete)))
  '(python-default-interpreter (quote cpython))
  '(python-guess-indent t)
  '(python-honour-comment-indentation nil)
@@ -566,7 +563,6 @@
  '(python-python-command "ipython")
  '(python-skeleton-autoinsert nil)
  '(python-use-skeletons nil)
- '(require-final-newline true)
  '(revert-without-query (quote (".*")))
  '(ropemacs-enable-autoimport nil)
  '(ropemacs-enable-shortcuts nil)
