@@ -4,6 +4,8 @@
 
 ;;; Don't steal files
 
+(set 'lexical-binding :t)
+
 ;;; Code:
 (setq create-lockfiles nil)
 
@@ -73,11 +75,15 @@
  'less-css-mode 'thrift 'yaml-mode 'sass-mode 'scss-mode
  'jinja2-mode 'json-mode
  ;; Inline checking
- 'pymacs 'flycheck
+ ;; 'pymacs
+ 'flycheck
  ;; Git
  'ibuffer-git
  ;; Other stuff
- 'yasnippet-bundle 'persistent-scratch 'hexrgb 'auto-complete
+ ;; 'yasnippet-bundle
+ 'persistent-scratch
+ ;; 'hexrgb
+    'auto-complete
  'exec-path-from-shell)
 
 ;; Load in any other modes I use frequently
@@ -335,14 +341,14 @@
 ;; Direct access to certain buffers
 (defun goto-buffer-func (key)
   (interactive)
-  (lexical-let ((buf (buffer-name)))
+  (let ((buf (buffer-name)))
     (global-set-key
      key (lambda ()
            (interactive)
            (switch-to-buffer buf)))))
 
 (defun set-goto-buffer-func (setkey gokey)
-  (lexical-let ((newgokey gokey))
+  (let ((newgokey gokey))
     (global-set-key setkey (lambda ()
                              (interactive)
                              (goto-buffer-func newgokey)))))
